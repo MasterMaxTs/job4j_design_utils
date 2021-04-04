@@ -1,4 +1,4 @@
-package ru.job4j.generics;
+package ru.job4j.generics.store;
 
 public interface Store<T extends Base> {
     void add(T model);

@@ -1,9 +1,10 @@
-package ru.job4j.generics;
+package ru.job4j.generics.store;
 
 public class User extends Base {
     private String name;
     private String surname;
     private int age;
+
     public User(String id, String name, String surname, int age) {
         super(id);
         this.name = name;
