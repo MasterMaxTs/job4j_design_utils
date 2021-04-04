@@ -29,6 +29,7 @@ public class SimpleArray<T> implements Iterable<T> {
                 array, index,
                 size - 1 - index
         );
+        size--;
     }
 
     public T get(int index) {
