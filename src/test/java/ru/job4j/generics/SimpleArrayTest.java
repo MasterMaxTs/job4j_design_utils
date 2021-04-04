@@ -21,7 +21,7 @@ public class SimpleArrayTest {
     public void whenAddFirstEl() {
         SimpleArray<Integer> sa = new SimpleArray<>(array);
         sa.add(1);
-        assertThat(array[0], is (1));
+        assertThat(array[0], is(1));
     }
 
     @Test
@@ -29,7 +29,7 @@ public class SimpleArrayTest {
         SimpleArray<Integer> sa = new SimpleArray<>(array);
         sa.add(1);
         sa.add(2);
-        assertThat(array[1], is (2));
+        assertThat(array[1], is(2));
     }
 
     @Test
@@ -38,7 +38,7 @@ public class SimpleArrayTest {
         sa.add(1);
         sa.add(2);
         sa.set(1, 3);
-        assertThat(array[1], is (3) );
+        assertThat(array[1], is(3));
     }
 
     @Test (expected = IndexOutOfBoundsException.class)
@@ -57,7 +57,7 @@ public class SimpleArrayTest {
         sa.add(3);
         sa.add(4);
         sa.remove(2);
-        assertThat(array[2], is (4));
+        assertThat(array[2], is(4));
     }
 
     @Test
@@ -65,8 +65,8 @@ public class SimpleArrayTest {
         SimpleArray<Integer> sa = new SimpleArray<>(array);
         sa.add(1);
         sa.add(2);
-        assertThat(sa.get(0), is (1));
-        assertThat(sa.get(1), is (2));
+        assertThat(sa.get(0), is(1));
+        assertThat(sa.get(1), is(2));
     }
 
     @Test (expected = IndexOutOfBoundsException.class)
@@ -86,10 +86,10 @@ public class SimpleArrayTest {
         sa.add(4);
         Iterator<Integer> it = sa.iterator();
         assertTrue(it.hasNext());
-        assertThat(it.next(), is (1));
-        assertThat(it.next(), is (2));
-        assertThat(it.next(), is (3));
-        assertThat(it.next(), is (4));
+        assertThat(it.next(), is(1));
+        assertThat(it.next(), is(2));
+        assertThat(it.next(), is(3));
+        assertThat(it.next(), is(4));
         assertFalse(it.hasNext());
     }
 }
