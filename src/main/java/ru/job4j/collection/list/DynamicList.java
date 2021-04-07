@@ -30,11 +30,7 @@ public class DynamicList<T> implements Iterable<T> {
 
             @Override
             public boolean hasNext() {
-                while (cell < elementData.length
-                        && elementData[cell] == null) {
-                    cell++;
-                }
-                return cell < elementData.length;
+                return cell < size;
             }
 
             @Override
