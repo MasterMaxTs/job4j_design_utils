@@ -7,6 +7,7 @@ import java.util.NoSuchElementException;
 
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertFalse;
 
 public class ForwardLinkedTest {
 
@@ -32,5 +33,16 @@ public class ForwardLinkedTest {
         assertThat(linked.deleteFirst(), is(1));
         Iterator<Integer> it = linked.iterator();
         assertThat(it.next(), is(2));
+    }
+
+    @Test
+    public void whenAddFirst() {
+        ForwardLinked<Integer> linked = new ForwardLinked<>();
+        linked.addFirst(1);
+        linked.addFirst(2);
+        Iterator<Integer> it = linked.iterator();
+        assertThat(it.next(), is(2));
+        assertThat(it.next(), is(1));
+        assertFalse(it.hasNext());
     }
 }
