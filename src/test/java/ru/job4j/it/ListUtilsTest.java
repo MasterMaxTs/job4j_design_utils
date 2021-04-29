@@ -34,7 +34,7 @@ public class ListUtilsTest {
     @Test(expected = IndexOutOfBoundsException.class)
     public void whenAddAfterWithInvalidIndex() {
         List<Integer> input = new ArrayList<>(List.of(1, 2, 3));
-        ListUtils.addBefore(input, 3, 4);
+        ListUtils.addAfter(input, 3, 4);
     }
 
     @Test
