@@ -3,7 +3,6 @@ package ru.job4j.map;
 import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
-import java.util.Objects;
 
 public class SimpleMap<K, V> implements Map<K, V> {
     private static final float LOAD_FACTOR = 0.75f;
@@ -21,11 +20,6 @@ public class SimpleMap<K, V> implements Map<K, V> {
             this.value = value;
         }
 
-        @Override
-        public int hashCode() {
-            return Objects.hash(key, value);
-        }
-
         public void setValue(V value) {
             this.value = value;
         }
@@ -33,7 +27,9 @@ public class SimpleMap<K, V> implements Map<K, V> {
 
     @Override
     public boolean put(K key, V value) {
-        expand();
+        if (count == table.length * LOAD_FACTOR) {
+            expand();
+        }
         MapEntry<K, V> node = new MapEntry<>(key, value);
         int hash = hash(node.key.hashCode());
         int index = indexFor(hash);
@@ -74,6 +70,26 @@ public class SimpleMap<K, V> implements Map<K, V> {
         return false;
     }
 
+    private int hash(int hashCode) {
+        return hashCode ^ (hashCode >>> 16);
+    }
+
+    private int indexFor(int hash) {
+        return hash == 0 ? 0 : hash & (table.length - 1);
+    }
+
+    private void expand() {
+        MapEntry<K, V>[] temp = table;
+        table = new MapEntry[table.length * 2];
+        for (MapEntry<K, V> oldNode : temp) {
+            if (oldNode != null) {
+                int hash = hash(oldNode.key.hashCode());
+                int index = indexFor(hash);
+                table[index] = oldNode;
+            }
+        }
+    }
+
     @Override
     public Iterator<K> iterator() {
         return new Iterator<>() {
@@ -83,10 +99,10 @@ public class SimpleMap<K, V> implements Map<K, V> {
             @Override
             public boolean hasNext() {
                 while (i < table.length) {
-                    if (table[i] == null) {
-                        i++;
+                    if (table[i] != null) {
+                        return true;
                     }
-                    return true;
+                    i++;
                 }
                 return false;
             }
@@ -99,31 +115,8 @@ public class SimpleMap<K, V> implements Map<K, V> {
                 if (expectModCount != modCount) {
                     throw new ConcurrentModificationException();
                 }
-                return table[i].key;
+                return table[i++].key;
             }
         };
-    }
-
-    private int hash(int hashCode) {
-        return hashCode ^ (hashCode >>> 16);
-    }
-
-    private int indexFor(int hash) {
-        return hash == 0 ? 0 : hash & (table.length - 1);
-    }
-
-    private void expand() {
-        if (count == table.length * LOAD_FACTOR) {
-            MapEntry<K, V>[] temp = table;
-            table = new MapEntry[table.length * 2];
-            for (int i = 0; i < temp.length; i++) {
-                if (temp[i] != null) {
-                    MapEntry<K, V> node = temp[i];
-                    int hash = hash(node.key.hashCode());
-                    int index = indexFor(hash);
-                    table[index] = node;
-                }
-            }
-        }
     }
 }
