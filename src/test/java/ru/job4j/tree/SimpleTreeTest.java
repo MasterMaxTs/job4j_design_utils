@@ -66,7 +66,7 @@ public class SimpleTreeTest {
     }
 
     @Test
-    public void whenCountOfChildIs2ThanTrue() {
+    public void whenTreeIsBinary() {
         SimpleTree<Integer> simpleTree = new SimpleTree<>(1);
         simpleTree.add(1, 2);
         simpleTree.add(1, 3);
@@ -76,7 +76,7 @@ public class SimpleTreeTest {
     }
 
     @Test
-    public void whenCountOfChildIsNot2ThanFalse() {
+    public void whenTreeIsNotBinary() {
         SimpleTree<Integer> simpleTree = new SimpleTree<>(1);
         simpleTree.add(1, 2);
         simpleTree.add(1, 3);
