@@ -64,4 +64,25 @@ public class SimpleTreeTest {
         tree.add(1, 3);
         assertFalse(tree.add(4, 5));
     }
+
+    @Test
+    public void whenCountOfChildIs2ThanTrue() {
+        SimpleTree<Integer> simpleTree = new SimpleTree<>(1);
+        simpleTree.add(1, 2);
+        simpleTree.add(1, 3);
+        simpleTree.add(3, 4);
+        simpleTree.add(3, 5);
+        assertTrue(simpleTree.isBinary());
+    }
+
+    @Test
+    public void whenCountOfChildIsNot2ThanFalse() {
+        SimpleTree<Integer> simpleTree = new SimpleTree<>(1);
+        simpleTree.add(1, 2);
+        simpleTree.add(1, 3);
+        simpleTree.add(3, 5);
+        simpleTree.add(3, 6);
+        simpleTree.add(3, 7);
+        assertFalse(simpleTree.isBinary());
+    }
 }
