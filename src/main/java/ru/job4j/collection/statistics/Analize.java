@@ -24,10 +24,10 @@ public class Analize {
         }
         for (User u
                 : current) {
-            if (!hm0.containsKey(u.getId())) {
+            if (hm0.get(u.getId()) == null) {
                 diffA++;
             }
-            if (hm0.containsKey(u.getId())
+            if (hm0.get(u.getId()) != null
                                          && !hm0.get(u.getId()).getName().equals(u.getName())) {
                 diffC++;
             }
