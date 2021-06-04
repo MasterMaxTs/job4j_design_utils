@@ -1,6 +1,7 @@
 package ru.job4j.collection.statistics;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Analize {
 
@@ -8,39 +9,29 @@ public class Analize {
         int diffA = 0;
         int diffC = 0;
         int diffD = 0;
-        if (previous.size() == current.size()
-                                              && previous.containsAll(current)) {
-            return new Info(diffA, diffC, diffD);
-        }
-        Map<Integer, User> hm0 = new HashMap<>();
-        Map<Integer, User> hm1 = new HashMap<>();
+        Map<Integer, User> hm = new HashMap<>();
+        Set<Integer> setId = current.stream()
+                                          .map(User::getId)
+                                          .collect(Collectors.toSet());
         for (User u
                 : previous) {
-            hm0.put(u.getId(), u);
-        }
-        for (User u
-                : current) {
-            hm1.put(u.getId(), u);
-        }
-        for (User u
-                : current) {
-            if (hm0.get(u.getId()) == null) {
-                diffA++;
-            }
-            if (hm0.get(u.getId()) != null
-                                         && !hm0.get(u.getId()).getName().equals(u.getName())) {
-                diffC++;
-            }
-        }
-        for (User u
-                : previous) {
-            if (hm1.get(u.getId()) == null) {
+            hm.put(u.getId(), u);
+            if (setId.add(u.getId())) {
                 diffD++;
             }
         }
-        return new Info(diffA, diffC, diffD);                   // O(4N) ~ O(N)
+        for (User u
+                : current) {
+            if (hm.get(u.getId()) == null) {
+                diffA++;
+            }
+            if (hm.get(u.getId()) != null
+                    && !hm.get(u.getId()).getName().equals(u.getName())) {
+                diffC++;
+            }
+        }
+        return new Info(diffA, diffC, diffD);                   // O(3N) ~ O(N)
     }
-
 
     public static class User {
         private int id;
