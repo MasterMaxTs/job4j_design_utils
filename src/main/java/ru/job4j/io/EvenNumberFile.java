@@ -18,9 +18,9 @@ public class EvenNumberFile {
             for (String s
                     : text) {
                 if (Integer.parseInt(s) % 2 == 0) {
-                    System.out.print(s + " - " + S0 + "\n");
+                    System.out.println(s + " - " + S0);
                 } else {
-                    System.out.print(s + " - " + S1 + "\n");
+                    System.out.println(s + " - " + S1);
                 }
             }
         } catch (IOException e) {
