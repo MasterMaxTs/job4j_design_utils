@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class LogFilter {
+    static final int STATUS_POSITION = 8;
 
     public static List<String> filter(String file) {
         List<String> rsl = new ArrayList<>();
@@ -14,7 +15,7 @@ public class LogFilter {
             String s;
             while ((s = bufferedReader.readLine()) != null) {
                 String[] strArr = s.split(" ");
-                if (strArr[8].equals("404")) {
+                if (strArr[STATUS_POSITION].equals("404")) {
                     rsl.add(s);
                 }
             }
