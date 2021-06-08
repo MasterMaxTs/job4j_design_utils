@@ -1,24 +1,17 @@
 package ru.job4j.collection.statistics;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class Analize {
 
     public Info diff(List<User> previous, List<User> current) {
         int diffA = 0;
         int diffC = 0;
-        int diffD = 0;
+        int diffD;
         Map<Integer, User> hm = new HashMap<>();
-        Set<Integer> setId = current.stream()
-                                          .map(User::getId)
-                                          .collect(Collectors.toSet());
         for (User u
                 : previous) {
             hm.put(u.getId(), u);
-            if (setId.add(u.getId())) {
-                diffD++;
-            }
         }
         for (User u
                 : current) {
@@ -30,7 +23,8 @@ public class Analize {
                 diffC++;
             }
         }
-        return new Info(diffA, diffC, diffD);                   // O(3N) ~ O(N)
+        diffD = previous.size() - (current.size() - diffA);
+        return new Info(diffA, diffC, diffD);                   // O(2N) ~ O(N)
     }
 
     public static class User {
