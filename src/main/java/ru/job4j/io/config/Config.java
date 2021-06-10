@@ -49,6 +49,9 @@ public class Config {
                                 )
                         );
             values.putAll(hm);
+            if (values.isEmpty()) {
+                throw new IllegalArgumentException();
+            }
             for (String key
                     : values.keySet()) {
                 out.write(key + "=" + values.get(key));

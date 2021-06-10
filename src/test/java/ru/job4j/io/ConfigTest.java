@@ -45,4 +45,12 @@ public class ConfigTest {
         Config config = new Config(readPath, writePath);
         config.load();
     }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void whenFileWithPropertiesIsEmptyThanException() {
+        String readPath = "./src/main/java/ru/job4j/io/config/app5.properties";
+        String writePath = "./data/pair_without_comment.properties";
+        Config config = new Config(readPath, writePath);
+        config.load();
+    }
 }
