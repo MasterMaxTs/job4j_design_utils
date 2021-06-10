@@ -31,7 +31,10 @@ public class LogFilter {
                         new FileOutputStream(file)
                 )
         )) {
-            out.print(log);
+            for (String str
+                    : log) {
+                out.println(str);
+            }
             System.out.println("log has been written in file \"" + file + "\"");
         } catch (FileNotFoundException e) {
             e.printStackTrace();
