@@ -11,9 +11,8 @@ public class ConfigTest {
 
     @Test
     public void whenPairWithoutComment() {
-        String readPath = "./src/main/java/ru/job4j/io/config/app.properties";
-        String writePath = "./data/pair_without_comment.properties";
-        Config config = new Config(readPath, writePath);
+        String path = "./src/main/java/ru/job4j/io/config/app.properties";
+        Config config = new Config(path);
         config.load();
         assertThat(config.value("user.name"), is("maxim"));
         assertThat(config.value(
@@ -23,34 +22,23 @@ public class ConfigTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void whenKeyIsNotInPropertiesThanException() {
-        String readPath = "./src/main/java/ru/job4j/io/config/app2.properties";
-        String writePath = "./data/pair_without_comment.properties";
-        Config config = new Config(readPath, writePath);
-        config.load();
-    }
-
-    @Test(expected = IllegalArgumentException.class)
     public void whenValueIsNotInPropertiesThanException() {
-        String readPath = "./src/main/java/ru/job4j/io/config/app3.properties";
-        String writePath = "./data/pair_without_comment.properties";
-        Config config = new Config(readPath, writePath);
+        String path = "./src/main/java/ru/job4j/io/config/app2.properties";
+        Config config = new Config(path);
         config.load();
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void whenDelimiterIsNotInPropertiesThanException() {
-        String readPath = "./src/main/java/ru/job4j/io/config/app4.properties";
-        String writePath = "./data/pair_without_comment.properties";
-        Config config = new Config(readPath, writePath);
+        String path = "./src/main/java/ru/job4j/io/config/app3.properties";
+        Config config = new Config(path);
         config.load();
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void whenFileWithPropertiesIsEmptyThanException() {
-        String readPath = "./src/main/java/ru/job4j/io/config/app5.properties";
-        String writePath = "./data/pair_without_comment.properties";
-        Config config = new Config(readPath, writePath);
+        String path= "./src/main/java/ru/job4j/io/config/app4.properties";
+        Config config = new Config(path);
         config.load();
     }
 }
