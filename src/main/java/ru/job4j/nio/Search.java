@@ -37,12 +37,14 @@ public class Search {
         }
 
         @Override
-        public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) throws IOException {
+        public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs)
+                                                    throws IOException {
             return FileVisitResult.CONTINUE;
         }
 
         @Override
-        public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
+        public FileVisitResult visitFile(Path file, BasicFileAttributes attrs)
+                                                    throws IOException {
             if (this.condition.test(file)) {
                 files.add(file.getFileName());
             }
@@ -50,12 +52,14 @@ public class Search {
         }
 
         @Override
-        public FileVisitResult visitFileFailed(Path file, IOException exc) throws IOException {
+        public FileVisitResult visitFileFailed(Path file, IOException exc)
+                                                    throws IOException {
             return FileVisitResult.CONTINUE;
         }
 
         @Override
-        public FileVisitResult postVisitDirectory(Path dir, IOException exc) throws IOException {
+        public FileVisitResult postVisitDirectory(Path dir, IOException exc)
+                                                    throws IOException {
             return FileVisitResult.CONTINUE;
         }
     }
