@@ -12,7 +12,8 @@ public class Search {
         Path start = Paths.get(".");
         search(start, p -> p.toFile().getName().endsWith(".java"))
                                         .forEach(System.out::println);
-        System.out.println("------ Searching file count:"
+        System.out.println("------ Searching file count in directory "
+                + start.toAbsolutePath() + " : "
                 + search(start, p -> p.toFile().getName().endsWith(".java")).size());
     }
 
