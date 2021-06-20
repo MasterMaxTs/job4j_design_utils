@@ -24,7 +24,7 @@ public class Search {
         return searcher.getPaths();
     }
 
-    static class SearchFiles implements FileVisitor<Path> {
+    static class SearchFiles extends SimpleFileVisitor<Path> {
         private final List<Path> files = new ArrayList<>();
         private final Predicate<Path> condition;
 
@@ -37,29 +37,11 @@ public class Search {
         }
 
         @Override
-        public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs)
-                                                    throws IOException {
-            return FileVisitResult.CONTINUE;
-        }
-
-        @Override
         public FileVisitResult visitFile(Path file, BasicFileAttributes attrs)
                                                     throws IOException {
             if (this.condition.test(file)) {
                 files.add(file.getFileName());
             }
-            return FileVisitResult.CONTINUE;
-        }
-
-        @Override
-        public FileVisitResult visitFileFailed(Path file, IOException exc)
-                                                    throws IOException {
-            return FileVisitResult.CONTINUE;
-        }
-
-        @Override
-        public FileVisitResult postVisitDirectory(Path dir, IOException exc)
-                                                    throws IOException {
             return FileVisitResult.CONTINUE;
         }
     }
