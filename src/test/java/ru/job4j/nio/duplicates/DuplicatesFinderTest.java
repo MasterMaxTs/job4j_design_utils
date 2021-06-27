@@ -7,11 +7,9 @@ import ru.job4j.nio.duplicates.DuplicatesFinder.DuplicatesVisitor;
 import static org.junit.Assert.assertThat;
 import static org.hamcrest.Matchers.is;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 
 public class DuplicatesFinderTest {
@@ -21,8 +19,7 @@ public class DuplicatesFinderTest {
 
     @Test
     public void whenDuplicatesAreExist() throws IOException {
-        File tempDirectory = folder.newFolder("folder");
-        Path tempDirPath = Paths.get(tempDirectory.getAbsolutePath());
+        Path tempDirPath = folder.newFolder("folder").toPath();
         Path filePath1 = tempDirPath.resolve("file1.txt");
         Path filePath2 = tempDirPath.resolve("file2.txt");
         Path nestedDirPath1 = tempDirPath.resolve("nfolder1");
