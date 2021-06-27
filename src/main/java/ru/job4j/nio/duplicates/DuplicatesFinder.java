@@ -3,20 +3,17 @@ package ru.job4j.nio.duplicates;
 import java.io.IOException;
 import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class DuplicatesFinder {
     public static void main(String[] args) throws IOException {
         Path file = Paths.get("./");
         DuplicatesVisitor duplicatesVisitor = new DuplicatesVisitor();
         Files.walkFileTree(file, duplicatesVisitor);
-        List<FileProperty> files = duplicatesVisitor.getDuplicateFiles();
-        System.out.println("--Searching duplicate files in directory: "
-                + file.toAbsolutePath());
-        files.forEach(System.out::println);
+        List<FileProperty> rsl = duplicatesVisitor.getDuplicateFiles();
+        System.out.println("--Searching " + rsl.size()
+                                + " duplicate files in directory: " + file.toAbsolutePath());
+        rsl.forEach(System.out::println);
     }
 
     static class DuplicatesVisitor extends SimpleFileVisitor<Path> {
@@ -28,10 +25,11 @@ public class DuplicatesFinder {
         }
 
         @Override
-        public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
-            FileProperty fileProperty = new FileProperty(0L, "");
-            fileProperty.setSize(file.toFile().length());
-            fileProperty.setName(file.toFile().getName());
+        public FileVisitResult visitFile(Path file, BasicFileAttributes attrs)
+                                                                        throws IOException {
+            FileProperty fileProperty = new FileProperty(
+                    file.toFile().length(), file.getFileName().toString()
+            );
             if (!uniqueFiles.add(fileProperty)) {
                 duplicateFiles.add(fileProperty);
             }
