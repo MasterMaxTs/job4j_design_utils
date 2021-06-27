@@ -12,14 +12,14 @@ public class SimpleMapTest {
 
     @Test
     public void whenPut() {
-        Map<Integer,String> sm = new SimpleMap<>();
+        Map<Integer, String> sm = new SimpleMap<>();
         assertTrue(sm.put(1, "one"));
         assertTrue(sm.put(2, "two"));
     }
 
     @Test
     public void whenPutThanGet() {
-        Map<Integer,String> sm = new SimpleMap<>();
+        Map<Integer, String> sm = new SimpleMap<>();
         sm.put(1, "one");
         sm.put(2, "two");
         assertTrue(sm.put(2, "three"));
@@ -29,7 +29,7 @@ public class SimpleMapTest {
 
     @Test
     public void whenKeyIsExistThanGet() {
-        Map<Integer,String> sm = new SimpleMap<>();
+        Map<Integer, String> sm = new SimpleMap<>();
         sm.put(1, "one");
         sm.put(2, "two");
         assertThat(sm.get(1), is("one"));
@@ -38,7 +38,7 @@ public class SimpleMapTest {
 
     @Test
     public void whenKeyIsNotExistThanGetNull() {
-        Map<Integer,String> sm = new SimpleMap<>();
+        Map<Integer, String> sm = new SimpleMap<>();
         sm.put(1, "one");
         sm.put(2, "two");
         assertNull(sm.get(0));
@@ -54,7 +54,7 @@ public class SimpleMapTest {
 
     @Test
     public void whenRemove() {
-        Map<Integer,String> sm = new SimpleMap<>();
+        Map<Integer, String> sm = new SimpleMap<>();
         sm.put(1, "one");
         sm.put(2, "two");
         assertTrue(sm.remove(1));
@@ -63,7 +63,7 @@ public class SimpleMapTest {
 
     @Test
     public void whenUseIterator() {
-        Map<Integer,String> sm = new SimpleMap<>();
+        Map<Integer, String> sm = new SimpleMap<>();
         sm.put(1, "one");
         sm.put(2, "two");
         Iterator<Integer> it = sm.iterator();
@@ -75,7 +75,7 @@ public class SimpleMapTest {
 
     @Test(expected = ConcurrentModificationException.class)
     public void whenFailFastIterator() {
-        Map<Integer,String> sm = new SimpleMap<>();
+        Map<Integer, String> sm = new SimpleMap<>();
         sm.put(1, "one");
         sm.put(2, "two");
         Iterator<Integer> it = sm.iterator();

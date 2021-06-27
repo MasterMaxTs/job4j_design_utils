@@ -50,6 +50,6 @@ public class DuplicatesFinderTest {
                         List.of(
                 new FileProperty(3L, "file2.txt"),
                 new FileProperty(3L, "file1.txt")
-        )) );
+        )));
     }
 }

@@ -29,6 +29,11 @@ public class User2 {
     }
 
     @Override
+    public int hashCode() {
+        return Objects.hash(name, gender, age);
+    }
+
+    @Override
     public String toString() {
         return "User{"
                 + "name='" + name

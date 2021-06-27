@@ -16,9 +16,9 @@ public class ConfigTest {
         config.load();
         assertThat(config.value("user.name"), is("maxim"));
         assertThat(config.value(
-                "hibernate.connection.url"), is ("jdbc:postgresql://127.0.0.1:5432/trackstudio")
+                "hibernate.connection.url"), is("jdbc:postgresql://127.0.0.1:5432/trackstudio")
         );
-        assertThat(config.value("user.age"), is (nullValue()));
+        assertThat(config.value("user.age"), is(nullValue()));
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -37,7 +37,7 @@ public class ConfigTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void whenFileWithPropertiesIsEmptyThanException() {
-        String path= "./src/main/java/ru/job4j/io/config/app4.properties";
+        String path = "./src/main/java/ru/job4j/io/config/app4.properties";
         Config config = new Config(path);
         config.load();
     }
