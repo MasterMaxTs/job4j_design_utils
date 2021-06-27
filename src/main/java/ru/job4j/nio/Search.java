@@ -9,12 +9,16 @@ import java.util.function.Predicate;
 
 public class Search {
     public static void main(String[] args) throws IOException {
-        Path start = Paths.get(".");
-        search(start, p -> p.toFile().getName().endsWith(".java"))
+        if (args.length != 2) {
+            throw new IllegalArgumentException("Incorrect entry of arguments!"
+                    + " Usage java -jar dir.jar START_FOLDER_PATH, SEARCHING_FILE_EXTENSION");
+        }
+        Path start = Paths.get(args[0]);
+        search(start, p -> p.toFile().getName().endsWith(args[1]))
                                         .forEach(System.out::println);
-        System.out.println("------ Searching file count in directory "
-                + start.toAbsolutePath() + " : "
-                + search(start, p -> p.toFile().getName().endsWith(".java")).size());
+        System.out.println("------ Searching count of files with extension \"" + args[1]
+                + "\" in directory " + start.toAbsolutePath() + " is "
+                + search(start, p -> p.toFile().getName().endsWith(args[1])).size());
     }
 
     public static List<Path> search(Path root, Predicate<Path> condition)
