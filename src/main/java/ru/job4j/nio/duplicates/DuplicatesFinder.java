@@ -7,7 +7,7 @@ import java.util.*;
 
 public class DuplicatesFinder {
     public static void main(String[] args) throws IOException {
-        Path filePath = Paths.get("./");
+        Path filePath = Paths.get(args[0]);
         DuplicatesVisitor duplicatesVisitor = new DuplicatesVisitor();
         Files.walkFileTree(filePath, duplicatesVisitor);
         List<FileProperty> rsl = duplicatesVisitor.getDuplicateFiles();
