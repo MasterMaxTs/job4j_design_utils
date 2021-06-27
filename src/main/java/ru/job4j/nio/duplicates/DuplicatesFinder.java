@@ -7,12 +7,12 @@ import java.util.*;
 
 public class DuplicatesFinder {
     public static void main(String[] args) throws IOException {
-        Path file = Paths.get("./");
+        Path filePath = Paths.get("./");
         DuplicatesVisitor duplicatesVisitor = new DuplicatesVisitor();
-        Files.walkFileTree(file, duplicatesVisitor);
+        Files.walkFileTree(filePath, duplicatesVisitor);
         List<FileProperty> rsl = duplicatesVisitor.getDuplicateFiles();
-        System.out.println("--Searching " + rsl.size()
-                                + " duplicate files in directory: " + file.toAbsolutePath());
+        System.out.println("\n--Searching " + rsl.size()
+                                + " duplicate files in directory: " + filePath.toAbsolutePath());
         rsl.forEach(System.out::println);
     }
 
@@ -25,15 +25,16 @@ public class DuplicatesFinder {
         }
 
         @Override
-        public FileVisitResult visitFile(Path file, BasicFileAttributes attrs)
+        public FileVisitResult visitFile(Path filePath, BasicFileAttributes attrs)
                                                                         throws IOException {
             FileProperty fileProperty = new FileProperty(
-                    file.toFile().length(), file.getFileName().toString()
+                    filePath.toFile().length(), filePath.toFile().getName()
             );
             if (!uniqueFiles.add(fileProperty)) {
                 duplicateFiles.add(fileProperty);
             }
-            return super.visitFile(file, attrs);
+            System.out.println("Scanning:\n" + filePath.toAbsolutePath());
+            return super.visitFile(filePath, attrs);
         }
     }
 }

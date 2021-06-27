@@ -9,7 +9,6 @@ import static org.hamcrest.Matchers.is;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -22,34 +21,32 @@ public class DuplicatesFinderTest {
 
     @Test
     public void whenDuplicatesAreExist() throws IOException {
-        File tempFolder = folder.newFolder("folder");
-        Path dir = Paths.get(tempFolder.getAbsolutePath());
-        System.out.println(dir.toAbsolutePath());
-        File file1 = new File(tempFolder, "file1.txt");
-        File file2 = new File(tempFolder, "file2.txt");
-        File nestedFolder1 = new File(tempFolder, "folder1");
-        nestedFolder1.mkdir();
-        File file3 = new File(nestedFolder1, "file3.txt");
-        File file4 = new File(nestedFolder1, "file2.txt");
-        File nestedFolder2 = new File(nestedFolder1, "folder2");
-        nestedFolder2.mkdir();
-        File file5 = new File(nestedFolder2, "file4.txt");
-        File file6 = new File(nestedFolder2, "file1.txt");
-        List<File> fileList = List.of(file1, file2, file3, file4, file5, file6);
-        for (File f
-                : fileList) {
-            try (PrintWriter writer = new PrintWriter(f)) {
-                writer.print("abc");
-            }
+        File tempDirectory = folder.newFolder("folder");
+        Path tempDirPath = Paths.get(tempDirectory.getAbsolutePath());
+        Path filePath1 = tempDirPath.resolve("file1.txt");
+        Path filePath2 = tempDirPath.resolve("file2.txt");
+        Path nestedDirPath1 = tempDirPath.resolve("nfolder1");
+        Files.createDirectory(nestedDirPath1);
+        Path filePath3 = nestedDirPath1.resolve("file3.txt");
+        Path filePath4 = nestedDirPath1.resolve("file2.txt");
+        Path nestedDirPath2 = nestedDirPath1.resolve("nfolder2");
+        Files.createDirectory(nestedDirPath2);
+        Path filePath5 = nestedDirPath2.resolve("file4.txt");
+        Path filePath6 = nestedDirPath2.resolve("file1.txt");
+        List<Path> filesPath = List.of(
+                filePath1, filePath2, filePath3, filePath4, filePath5, filePath6
+        );
+        for (Path fp
+                : filesPath) {
+            Files.write(fp, "Hello".getBytes());
         }
         DuplicatesVisitor duplicatesVisitor = new DuplicatesVisitor();
-        Files.walkFileTree(dir, duplicatesVisitor);
+        Files.walkFileTree(tempDirPath, duplicatesVisitor);
         List<FileProperty> rsl = duplicatesVisitor.getDuplicateFiles();
-        assertThat(
-                rsl, is(
-                        List.of(
-                new FileProperty(3L, "file2.txt"),
-                new FileProperty(3L, "file1.txt")
-        )));
+        List<FileProperty> expected = List.of(
+                new FileProperty(5L, "file2.txt"),
+                new FileProperty(5L, "file1.txt")
+        );
+        assertThat(rsl, is(expected));
     }
 }
