@@ -13,6 +13,9 @@ public class ArgsName {
     }
 
     public void parse(String[] args) {
+        if (args.length == 0) {
+            throw new IllegalArgumentException();
+        }
         values = Stream.of(args)
                 .map(str -> str.split("="))
                 .collect(
@@ -27,9 +30,6 @@ public class ArgsName {
                         v -> v[1]
                 )
         );
-        if (values.isEmpty()) {
-            throw new IllegalArgumentException();
-        }
     }
 
     public static ArgsName of(String[] args) {
