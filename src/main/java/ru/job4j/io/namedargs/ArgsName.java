@@ -1,4 +1,4 @@
-package ru.job4j.io;
+package ru.job4j.io.namedargs;
 
 import java.util.HashMap;
 import java.util.Map;
