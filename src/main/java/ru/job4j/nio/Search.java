@@ -44,7 +44,7 @@ public class Search {
         public FileVisitResult visitFile(Path file, BasicFileAttributes attrs)
                                                     throws IOException {
             if (this.condition.test(file)) {
-                files.add(file.getFileName());
+                files.add(file);
             }
             return FileVisitResult.CONTINUE;
         }
