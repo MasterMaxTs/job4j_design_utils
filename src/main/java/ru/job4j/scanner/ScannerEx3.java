@@ -15,9 +15,17 @@ public class ScannerEx3 {
         )) {
             bos.write(data.getBytes());
         }
+        // Вариант 1:
         try (Scanner scanner = new Scanner(tempFile).useRadix(16)) {
             while (scanner.hasNextInt()) {
                 System.out.print(scanner.nextInt());
+                System.out.print(" ");
+            }
+        }
+        // Вариант2:
+        try (Scanner scanner = new Scanner(tempFile)) {
+            while (scanner.hasNextInt(16)) {
+                System.out.print(scanner.nextInt(16));
                 System.out.print(" ");
             }
         }
