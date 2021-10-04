@@ -32,7 +32,7 @@ public class ConsoleChat {
                     builder.append(getDate()).append("User: ").append(input).append("\n");
                     break;
                 }
-                builder.append("User: ").append(input).append("\n");
+                builder.append(getDate()).append("User: ").append(input).append("\n");
                 if (input.equalsIgnoreCase(STOP)) {
                     do {
                         System.out.println("User: ");
