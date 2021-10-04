@@ -2,6 +2,7 @@ package ru.job4j.encoding;
 
 import java.io.*;
 import java.nio.charset.Charset;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -19,31 +20,32 @@ public class ConsoleChat {
 
     private void run() {
         StringBuilder builder = new StringBuilder();
-        Random random = new Random();
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Let's go chat with Bot! ");
-        String input = CONTINUE;
-        String answer;
-        while (!input.equalsIgnoreCase(OUT)) {
-            System.out.println("User: ");
-            input = scanner.nextLine();
-            if (input.equalsIgnoreCase(OUT)) {
+        try (Scanner scanner = new Scanner(System.in)) {
+            Random random = new Random();
+            System.out.println("Let's go chat with Bot! ");
+            String input = CONTINUE;
+            String answer;
+            while (!input.equalsIgnoreCase(OUT)) {
+                System.out.println("User: ");
+                input = scanner.nextLine();
+                if (input.equalsIgnoreCase(OUT)) {
+                    builder.append(getDate()).append("User: ").append(input).append("\n");
+                    break;
+                }
                 builder.append("User: ").append(input).append("\n");
-                break;
+                if (input.equalsIgnoreCase(STOP)) {
+                    do {
+                        System.out.println("User: ");
+                        input = scanner.nextLine();
+                        builder.append(getDate()).append("User: ").append(input).append("\n");
+                        System.out.println("User: ");
+                    } while (!input.equalsIgnoreCase(CONTINUE));
+                }
+                answer = readPhrases().get(random.nextInt(readPhrases().size()));
+                builder.append(getDate()).append("Bot: ").append(answer).append("\n");
+                System.out.println("User: " + input);
+                System.out.println("Bot:" + answer);
             }
-            builder.append("User: ").append(input).append("\n");
-            if (input.equalsIgnoreCase(STOP)) {
-                do {
-                    System.out.println("User: ");
-                    input = scanner.nextLine();
-                    builder.append("User: ").append(input).append("\n");
-                    System.out.println("User: ");
-                } while (!input.equalsIgnoreCase(CONTINUE));
-            }
-            answer = readPhrases().get(random.nextInt(readPhrases().size()));
-            builder.append("Bot: ").append(answer).append("\n");
-            System.out.println("User: " + input);
-            System.out.println("Bot:" + answer);
         }
         String[] arr = builder.toString().split("\n");
         List<String> log = new ArrayList<>(Arrays.asList(arr));
@@ -69,6 +71,11 @@ public class ConsoleChat {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private String getDate() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd:MM:yy HH:mm:ss");
+        return dateFormat.format(new Date()) + " ";
     }
 
     public static void main(String[] args) {
