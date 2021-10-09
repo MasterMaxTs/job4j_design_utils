@@ -3,7 +3,13 @@ package ru.job4j.collection.statistics;
 import java.util.*;
 
 public class Analize {
-
+    /**
+     * Метод выявляет различия во входящих данных в виде количественной оценки.
+     * Сложность алгоритма О(2N) ~ N.
+     * @param previous список устаравших данных на входе
+     * @param current список текущих данных на входе
+     * @return возвращает объект различия данных в виде количественной оценки
+     */
     public Info diff(List<User> previous, List<User> current) {
         int diffA = 0;
         int diffC = 0;
@@ -24,7 +30,7 @@ public class Analize {
             }
         }
         diffD = previous.size() - (current.size() - diffA);
-        return new Info(diffA, diffC, diffD);                   // O(2N) ~ O(N)
+        return new Info(diffA, diffC, diffD);                 
     }
 
     public static class User {

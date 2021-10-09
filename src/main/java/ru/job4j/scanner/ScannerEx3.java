@@ -4,7 +4,11 @@ import java.io.*;
 import java.util.Scanner;
 
 /**
- * Класс позволяет прочитать числа в шестнадцатеричном виде и вывести в десятичном
+ * Класс демонстрирует прочтение чисел из файла,
+ * записанных в шестнадцатеричном виде, и вывод их
+ * представления в десятичном виде.
+ * Показано два варианта.
+ *
  */
 public class ScannerEx3 {
     public static void main(String[] args) throws IOException {
@@ -15,14 +19,12 @@ public class ScannerEx3 {
         )) {
             bos.write(data.getBytes());
         }
-        // Вариант 1:
         try (Scanner scanner = new Scanner(tempFile).useRadix(16)) {
             while (scanner.hasNextInt()) {
                 System.out.print(scanner.nextInt());
                 System.out.print(" ");
             }
         }
-        // Вариант2:
         try (Scanner scanner = new Scanner(tempFile)) {
             while (scanner.hasNextInt(16)) {
                 System.out.print(scanner.nextInt(16));
