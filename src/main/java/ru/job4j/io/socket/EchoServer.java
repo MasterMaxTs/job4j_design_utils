@@ -24,6 +24,7 @@ public class EchoServer {
                                 anyMatch(p -> p.equals("Bye"))) {
                             out.write((server + " closed").getBytes());
                             server.close();
+                            break;
                         }
                         System.out.println(str);
                     }
