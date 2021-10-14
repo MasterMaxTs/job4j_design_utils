@@ -57,12 +57,6 @@ public class CSVReader {
     }
 
     public void showResult(String out, String result) {
-        if (!out.equals("stdout") && !(out.contains("/") || out.contains("\\"))) {
-            throw new IllegalArgumentException(
-                    "Incorrect value in OUT parameter -out= "
-                    + "Get -out='stdout' for output in console or use 'path' to write result in file"
-            );
-        }
         if (out.equals("stdout")) {
             System.out.println(result);
         }
@@ -81,7 +75,16 @@ public class CSVReader {
                     + " Usage java -jar target/csvReader.jar -path=pathTofile -delimiter=delimiter"
                     + "-out=stdout or pathToOutFile -filter=filter");
         }
-        return ArgsName.of(args);
+        ArgsName names = ArgsName.of(args);
+        String out = names.get("out");
+        if (!out.equals("stdout")
+                && !(out.contains("/") || out.contains("\\"))) {
+            throw new IllegalArgumentException(
+                    "Incorrect value in OUT parameter -out= "
+                    + "Get -out='stdout' for output in console or use 'path' to write result in file"
+            );
+        }
+        return names;
     }
 
     public static void main(String[] args) throws Exception {

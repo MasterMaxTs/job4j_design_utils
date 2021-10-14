@@ -77,67 +77,45 @@ public class CSVReaderTest {
 
     @Test (expected = NoSuchElementException.class)
     public void whenInvalidFilterThanException() throws Exception {
-        String data = String.join(
-                System.lineSeparator(),
-                "name;age;last_name;education",
-                "Tom;20;Smith;Bachelor",
-                "Jack;25;Johnson;Undergraduate",
-                "William;30;Brown;Secondary special"
-        );
         File file = temporaryFolder.newFile("source.csv");
         File target = temporaryFolder.newFile("target.csv");
-        ArgsName argsName = ArgsName.of(new String[]{
+        String[] args = new String[]{
                 "-path=" + file.getAbsolutePath(),
                 "-delimiter=;",
                 "-out=" + target.getAbsolutePath(),
                 "-filter=name,surname"
-        });
-        Files.writeString(file.toPath(), data);
+        };
         CSVReader csvReader = new CSVReader();
+        ArgsName argsName = csvReader.validate(args);
         csvReader.handle(argsName);
     }
 
     @Test (expected = IllegalArgumentException.class)
     public void whenInvalidArgumentsThanException() throws Exception {
-        String data = String.join(
-                System.lineSeparator(),
-                "name;age;last_name;education",
-                "Tom;20;Smith;Bachelor",
-                "Jack;25;Johnson;Undergraduate",
-                "William;30;Brown;Secondary special"
-        );
         File file = temporaryFolder.newFile("source.csv");
         File target = temporaryFolder.newFile("target.csv");
-        ArgsName argsName = ArgsName.of(new String[]{
+        String[] args = new String[]{
                 "-path=" + file.getAbsolutePath(),
                 "-delimiter=;",
                 "-out=" + target.getAbsolutePath(),
                 "-filter="
-        });
-        Files.writeString(file.toPath(), data);
+        };
         CSVReader csvReader = new CSVReader();
+        ArgsName argsName = csvReader.validate(args);
         csvReader.handle(argsName);
     }
 
     @Test (expected = IllegalArgumentException.class)
     public void whenInvalidValueInOUT() throws Exception {
-        String data = String.join(
-                System.lineSeparator(),
-                "name;age;last_name;education",
-                "Tom;20;Smith;Bachelor",
-                "Jack;25;Johnson;Undergraduate",
-                "William;30;Brown;Secondary special"
-        );
         File file = temporaryFolder.newFile("source.csv");
-        File target = temporaryFolder.newFile("target.csv");
-        ArgsName argsName = ArgsName.of(new String[]{
+        String[] args = new String[]{
                 "-path=" + file.getAbsolutePath(),
                 "-delimiter=;",
-                "-out=sdtout",
+                "-out=sdotout",
                 "-filter=name,age"
-        });
-        Files.writeString(file.toPath(), data);
+        };
         CSVReader csvReader = new CSVReader();
+        ArgsName argsName = csvReader.validate(args);
         csvReader.handle(argsName);
     }
 }
