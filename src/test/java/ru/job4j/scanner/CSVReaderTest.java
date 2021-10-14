@@ -118,4 +118,26 @@ public class CSVReaderTest {
         CSVReader csvReader = new CSVReader();
         csvReader.handle(argsName);
     }
+
+    @Test (expected = IllegalArgumentException.class)
+    public void whenInvalidValueInOUT() throws Exception {
+        String data = String.join(
+                System.lineSeparator(),
+                "name;age;last_name;education",
+                "Tom;20;Smith;Bachelor",
+                "Jack;25;Johnson;Undergraduate",
+                "William;30;Brown;Secondary special"
+        );
+        File file = temporaryFolder.newFile("source.csv");
+        File target = temporaryFolder.newFile("target.csv");
+        ArgsName argsName = ArgsName.of(new String[]{
+                "-path=" + file.getAbsolutePath(),
+                "-delimiter=;",
+                "-out=sdtout" ,
+                "-filter=name,age"
+        });
+        Files.writeString(file.toPath(), data);
+        CSVReader csvReader = new CSVReader();
+        csvReader.handle(argsName);
+    }
 }

@@ -57,12 +57,20 @@ public class CSVReader {
     }
 
     public void showResult(String out, String result) {
+        if (!out.equals("stdout") && !(out.contains("/") || out.contains("\\"))) {
+            throw new IllegalArgumentException(
+                    "Incorrect value in OUT parameter -out= "
+                    + "Get -out='stdout' for output in console or use 'path' to write result in file"
+            );
+        }
         if (out.equals("stdout")) {
             System.out.println(result);
         }
         try (PrintWriter pw = new PrintWriter(new FileWriter(out))) {
             pw.print(result);
         } catch (IOException e) {
+            System.out.println("Incorrect value in OUT parameter -out= !"
+                                + "Get correct path to write result in file");
             e.printStackTrace();
         }
     }
