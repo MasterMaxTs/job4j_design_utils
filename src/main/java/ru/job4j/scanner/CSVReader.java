@@ -3,6 +3,7 @@ package ru.job4j.scanner;
 import ru.job4j.io.namedargs.ArgsName;
 
 import java.io.FileWriter;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.charset.Charset;
 import java.nio.file.Path;
@@ -16,14 +17,17 @@ public class CSVReader {
         String delimiter = argsName.get("delimiter");
         String out = argsName.get("out");
         String[] filter = argsName.get("filter").split(",");
-        String header = String.join(delimiter, filter);
-        String ls = System.lineSeparator();
-        StringBuilder builder = new StringBuilder();
-        builder.append(header).append(ls);
         try (Scanner scanner = new Scanner(path, Charset.forName("WINDOWS-1251"))) {
             String firstLine = scanner.nextLine();
             List<String> columns = Arrays.asList(firstLine.split(delimiter));
-            int[] indexes = new int[filter.length];
+            int[] position = getIndexes(columns, filter);
+            String result = getReader(delimiter, filter, position, scanner);
+            showResult(out, result);
+        }
+    }
+
+    public static int[] getIndexes(List<String> columns, String[] filter) {
+        int[] indexes = new int[filter.length];
             for (int i = 0; i < filter.length; i++) {
                 int index = columns.indexOf(filter[i]);
                 if (index == -1) {
@@ -31,22 +35,35 @@ public class CSVReader {
                 }
                 indexes[i] = index;
             }
-            String[] strings = new String[indexes.length];
-            String rsl;
-            while (scanner.hasNextLine()) {
-                String[] nextLine = scanner.nextLine().split(delimiter);
-                for (int i = 0; i < indexes.length; i++) {
-                    strings[i] = nextLine[indexes[i]];
-                }
-                    rsl = String.join(delimiter, strings);
-                    builder.append(rsl).append(ls);
+            return indexes;
+    }
+
+    public static String getReader(String delimiter, String[] filter, int[] position, Scanner sc) {
+        StringBuilder builder = new StringBuilder();
+        String header = String.join(delimiter, filter);
+        String ls = System.lineSeparator();
+        builder.append(header).append(ls);
+        String[] strings = new String[position.length];
+        String rsl;
+        while (sc.hasNextLine()) {
+            String[] nextLine = sc.nextLine().split(delimiter);
+            for (int i = 0; i < position.length; i++) {
+                strings[i] = nextLine[position[i]];
             }
+            rsl = String.join(delimiter, strings);
+            builder.append(rsl).append(ls);
         }
+        return builder.toString();
+    }
+
+    public static void showResult(String out, String result) {
         if (out.equals("stdout")) {
-            System.out.print(builder);
+            System.out.println(result);
         }
         try (PrintWriter pw = new PrintWriter(new FileWriter(out))) {
-            pw.print(builder);
+            pw.print(result);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
