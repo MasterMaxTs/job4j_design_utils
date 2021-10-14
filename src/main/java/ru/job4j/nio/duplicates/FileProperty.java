@@ -6,6 +6,10 @@ public class FileProperty {
     private Long size;
     private String name;
 
+    public String getName() {
+        return name;
+    }
+
     public FileProperty(Long size, String name) {
         this.size = size;
         this.name = name;

@@ -8,6 +8,7 @@ import ru.job4j.nio.duplicates.DuplicatesFinder.DuplicatesVisitor;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Comparator;
 import java.util.List;
 
 import static org.hamcrest.Matchers.is;
@@ -47,9 +48,10 @@ public class DuplicatesFinderTest {
         DuplicatesVisitor duplicatesVisitor = new DuplicatesVisitor();
         Files.walkFileTree(tempDirPath, duplicatesVisitor);
         List<FileProperty> rsl = duplicatesVisitor.getDuplicateFiles();
+        rsl.sort(Comparator.comparing(FileProperty::getName));
         List<FileProperty> expected = List.of(
-                new FileProperty(5L, "file2.txt"),
-                new FileProperty(5L, "file1.txt")
+                new FileProperty(5L, "file1.txt"),
+                new FileProperty(5L, "file2.txt")
         );
         assertThat(rsl, is(expected));
     }
