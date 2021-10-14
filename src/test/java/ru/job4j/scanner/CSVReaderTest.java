@@ -133,7 +133,7 @@ public class CSVReaderTest {
         ArgsName argsName = ArgsName.of(new String[]{
                 "-path=" + file.getAbsolutePath(),
                 "-delimiter=;",
-                "-out=sdtout" ,
+                "-out=sdtout",
                 "-filter=name,age"
         });
         Files.writeString(file.toPath(), data);
