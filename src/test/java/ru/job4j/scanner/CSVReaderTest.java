@@ -40,7 +40,8 @@ public class CSVReaderTest {
                 "Jack;25",
                 "William;30"
         ).concat(System.lineSeparator());
-        CSVReader.handle(argsName);
+        CSVReader csvReader = new CSVReader();
+        csvReader.handle(argsName);
         Assert.assertEquals(expected, Files.readString(target.toPath()));
     }
 
@@ -69,7 +70,8 @@ public class CSVReaderTest {
                 "Undergraduate;Johnson;Jack;25",
                 "Secondary special;Brown;William;30"
         ).concat(System.lineSeparator());
-        CSVReader.handle(argsName);
+        CSVReader csvReader = new CSVReader();
+        csvReader.handle(argsName);
         Assert.assertEquals(expected, Files.readString(target.toPath()));
     }
 
@@ -91,7 +93,8 @@ public class CSVReaderTest {
                 "-filter=name,surname"
         });
         Files.writeString(file.toPath(), data);
-        CSVReader.handle(argsName);
+        CSVReader csvReader = new CSVReader();
+        csvReader.handle(argsName);
     }
 
     @Test (expected = IllegalArgumentException.class)
@@ -112,6 +115,7 @@ public class CSVReaderTest {
                 "-filter="
         });
         Files.writeString(file.toPath(), data);
-        CSVReader.handle(argsName);
+        CSVReader csvReader = new CSVReader();
+        csvReader.handle(argsName);
     }
 }

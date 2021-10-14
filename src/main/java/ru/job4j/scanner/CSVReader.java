@@ -11,7 +11,7 @@ import java.nio.file.Paths;
 import java.util.*;
 
 public class CSVReader {
-    public static void handle(ArgsName argsName) throws Exception {
+    public void handle(ArgsName argsName) throws Exception {
         String fileName = argsName.get("path");
         Path path = Paths.get(fileName);
         String delimiter = argsName.get("delimiter");
@@ -26,7 +26,7 @@ public class CSVReader {
         }
     }
 
-    public static int[] getIndexes(List<String> columns, String[] filter) {
+    public int[] getIndexes(List<String> columns, String[] filter) {
         int[] indexes = new int[filter.length];
             for (int i = 0; i < filter.length; i++) {
                 int index = columns.indexOf(filter[i]);
@@ -38,7 +38,7 @@ public class CSVReader {
             return indexes;
     }
 
-    public static String getReader(String delimiter, String[] filter, int[] position, Scanner sc) {
+    public String getReader(String delimiter, String[] filter, int[] position, Scanner sc) {
         StringBuilder builder = new StringBuilder();
         String header = String.join(delimiter, filter);
         String ls = System.lineSeparator();
@@ -56,7 +56,7 @@ public class CSVReader {
         return builder.toString();
     }
 
-    public static void showResult(String out, String result) {
+    public void showResult(String out, String result) {
         if (out.equals("stdout")) {
             System.out.println(result);
         }
@@ -67,13 +67,18 @@ public class CSVReader {
         }
     }
 
-    public static void main(String[] args) throws Exception {
+    public ArgsName validate(String[] args) {
         if (args.length != 4) {
             throw new IllegalArgumentException("Incorrect entry of arguments!"
                     + " Usage java -jar target/csvReader.jar -path=pathTofile -delimiter=delimiter"
                     + "-out=stdout or pathToOutFile -filter=filter");
         }
-        ArgsName jvm = ArgsName.of(args);
-        handle(jvm);
+        return ArgsName.of(args);
+    }
+
+    public static void main(String[] args) throws Exception {
+        CSVReader csvReader = new CSVReader();
+        ArgsName jvm = csvReader.validate(args);
+        csvReader.handle(jvm);
     }
 }
