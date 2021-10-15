@@ -14,11 +14,10 @@ public class EchoServer {
     public static final int POSITION = 2;
 
     private String getRequestCommand(BufferedReader reader) throws IOException {
-        String requestCommand = "";
         StringBuilder sb = new StringBuilder();
         String str = reader.readLine();
         sb.append(str).append(System.lineSeparator());
-        requestCommand = Arrays.stream(str.split(" "))
+        String requestCommand = Arrays.stream(str.split(" "))
                 .flatMap(f -> Arrays.stream(f.split("=")))
                 .collect(Collectors.toList()).get(POSITION);
         for (str = reader.readLine(); str != null && !str.isEmpty(); str = reader.readLine()) {
@@ -31,18 +30,18 @@ public class EchoServer {
     private void getResponse(ServerSocket server, String requestCommand,
                              OutputStream out) throws IOException {
         switch (requestCommand) {
-            case HELLO -> {
+            case HELLO:
                 out.write("Hello".getBytes());
                 out.flush();
-            }
-            case EXIT -> {
+                break;
+            case EXIT:
                 server.close();
                 out.write((server + " closed").getBytes());
-            }
-            default -> {
+                break;
+            default:
                 out.write(WHAT.getBytes());
                 out.flush();
-            }
+                break;
         }
     }
 
