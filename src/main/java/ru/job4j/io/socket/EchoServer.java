@@ -31,7 +31,7 @@ public class EchoServer {
                              OutputStream out) throws IOException {
         switch (requestCommand) {
             case HELLO:
-                out.write("Hello".getBytes());
+                out.write(HELLO.getBytes());
                 out.flush();
                 break;
             case EXIT:
