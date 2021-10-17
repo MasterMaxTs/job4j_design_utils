@@ -1,5 +1,8 @@
 package ru.job4j.io.socket;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -12,10 +15,12 @@ import java.util.stream.Collectors;
  */
 public class EchoServer {
 
-    public static final String HELLO = "Hello";
-    public static final String EXIT = "Exit";
-    public static final String WHAT = "What";
-    public static final int POSITION = 2;
+    private static final Logger LOG =
+        LoggerFactory.getLogger(EchoServer.class.getName());
+    private static final String HELLO = "Hello";
+    private static final String EXIT = "Exit";
+    private static final String WHAT = "What";
+    private static final int POSITION = 2;
 
     /**
      * Метод выделяет значение ключа msg в параметрах строки клиентского HTTP
@@ -40,8 +45,9 @@ public class EchoServer {
     }
 
     /**
-     * Метод генерирует ответ серверного бота в зависимости от ключа запроса
-     * @param server сущность серверного сокета на входе
+     * Метод генерирует ответ серверного бота в зависимости от значения
+     * ключа запроса
+     * @param server объект серверного сокета на входе
      * @param requestCommand значение клиентского ключа запроса на входе
      * @param out поток для записи выходных данных на входе
      */
@@ -63,7 +69,7 @@ public class EchoServer {
         }
     }
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         EchoServer echoServer = new EchoServer();
         String requestCommand;
         try (ServerSocket server = new ServerSocket(9000)) {
@@ -76,8 +82,13 @@ public class EchoServer {
                     out.write("HTTP/1.1 200 OK\r\n\r\n".getBytes());
                     requestCommand = echoServer.getRequestCommand(in);
                     echoServer.getResponse(server, requestCommand, out);
+                } catch (IOException e) {
+                    LOG.error("Exception in log: reading or writing "
+                                + "request/response messages occurred with an error ", e);
                 }
             }
+        } catch (IOException e) {
+            LOG.error("Exception in log: an error was found during socket creation", e);
         }
     }
 }
