@@ -6,6 +6,10 @@ import java.net.Socket;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
+/**
+ * Класс реализует сущность серверного бота.
+ * Клиент отправляет запросы, сервер отвечает клиенту штатным набором фраз
+ */
 public class EchoServer {
 
     public static final String HELLO = "Hello";
@@ -13,6 +17,14 @@ public class EchoServer {
     public static final String WHAT = "What";
     public static final int POSITION = 2;
 
+    /**
+     * Метод выделяет значение ключа msg в параметрах строки клиентского HTTP
+     * запроса, также выводит в консоль строку клиентского запроса.
+     * @param reader буфферизированный поток входных данных клиентского
+     * запроса на входе
+     * @return возвращает значение ключа msg в параметрах строки клиентского
+     * HTTP запроса
+     */
     private String getRequestCommand(BufferedReader reader) throws IOException {
         StringBuilder sb = new StringBuilder();
         String str = reader.readLine();
@@ -27,6 +39,12 @@ public class EchoServer {
         return requestCommand;
     }
 
+    /**
+     * Метод генерирует ответ серверного бота в зависимости от ключа запроса
+     * @param server сущность серверного сокета на входе
+     * @param requestCommand значение клиентского ключа запроса на входе
+     * @param out поток для записи выходных данных на входе
+     */
     private void getResponse(ServerSocket server, String requestCommand,
                              OutputStream out) throws IOException {
         switch (requestCommand) {
