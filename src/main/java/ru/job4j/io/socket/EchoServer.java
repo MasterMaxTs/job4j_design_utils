@@ -14,12 +14,23 @@ import java.util.stream.Collectors;
  * Клиент отправляет запросы, сервер отвечает клиенту штатным набором фраз
  */
 public class EchoServer {
+    enum ResponsePhrases {
+        HELLO("Hello"),
+        WHAT("What");
+
+        private final String phrase;
+        
+        ResponsePhrases(String phrase) {
+            this.phrase = phrase;
+        }
+
+        public String getPhrase() {
+            return phrase;
+        }
+    }
 
     private static final Logger LOG =
         LoggerFactory.getLogger(EchoServer.class.getName());
-    private static final String HELLO = "Hello";
-    private static final String EXIT = "Exit";
-    private static final String WHAT = "What";
     private static final int POSITION = 2;
 
     /**
@@ -54,16 +65,16 @@ public class EchoServer {
     private void getResponse(ServerSocket server, String requestCommand,
                              OutputStream out) throws IOException {
         switch (requestCommand) {
-            case HELLO:
-                out.write(HELLO.getBytes());
+            case "Hello":
+                out.write(ResponsePhrases.HELLO.getPhrase().getBytes());
                 out.flush();
                 break;
-            case EXIT:
+            case "Exit":
                 server.close();
                 out.write((server + " closed").getBytes());
                 break;
             default:
-                out.write(WHAT.getBytes());
+                out.write(ResponsePhrases.WHAT.getPhrase().getBytes());
                 out.flush();
                 break;
         }
