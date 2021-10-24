@@ -2,8 +2,8 @@
 <!-- XML данные объекта треугольник -->
 <triangle isosceles="false" height="3" triangleType="acute-angled">
     <points>
-    <point x="1" y="1"/>
-    <point x="3" y="2"/>
-    <point x="0" y="4"/>
+        <point x="1" y="1"/>
+        <point x="3" y="2"/>
+        <point x="0" y="4"/>
     </points>
 </triangle>
