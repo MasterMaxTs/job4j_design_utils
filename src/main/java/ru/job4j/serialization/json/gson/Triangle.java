@@ -1,4 +1,4 @@
-package ru.job4j.serialization.json;
+package ru.job4j.serialization.json.gson;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -16,7 +16,7 @@ public class Triangle {
     private final boolean isosceles;
     private final float height;
     private final String triangleType;
-    private Point[] points = new Point[3];
+    private Point[] points;
 
     public Triangle(boolean isosceles, float height,
                     String triangleType, Point[] points) {
@@ -46,14 +46,14 @@ public class Triangle {
         );
         /* Преобразуем объект person в json-строку и запишим в выходной файл. */
         final Gson gson = new GsonBuilder().create();
-        Path out = Paths.get("./src/main/java/ru/job4j/serialization/json"
+        Path out = Paths.get("./src/main/java/ru/job4j/serialization/json/gson"
                 + "/TriangleSettingsDefault.json");
         Files.writeString(out, gson.toJson(triangle));
 
         /*Проинициализированный объект json-строкой из файла TriangleSettings
         .json*/
         Path input = Paths.get("./src/main/java/ru/job4j/serialization/json"
-                + "/TriangleSettings.json");
+                + "/gson/TriangleSettings.json");
         try (BufferedReader reader = new BufferedReader(
                 new FileReader(input.toFile())
         )) {

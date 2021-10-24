@@ -1,0 +1,19 @@
+{
+  "isosceles": false,
+  "height": 3,
+  "triangleType": "acute-angled",
+  "points": [
+    {
+      "x": 1,
+      "y": 3
+    },
+    {
+      "x": 2,
+      "y": 1
+    },
+    {
+      "x": 4,
+      "y": 5
+    }
+  ]
+}
