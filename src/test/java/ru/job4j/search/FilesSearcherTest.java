@@ -36,7 +36,12 @@ public class FilesSearcherTest {
         FilesSearcher searcher = new FilesSearcher();
         searcher.searchFiles(directory, condition, typeSearch, out);
         try (Scanner sc = new Scanner(out)) {
-            List<String> rsl = List.of(sc.nextLine(), sc.nextLine(), sc.nextLine());
+            List<String> rsl = new ArrayList<>(
+                    List.of(sc.nextLine(), sc.nextLine(), sc.nextLine())
+            );
+            /* Добавлена сортировка для исправления ошибки тестирования на
+            сервере Travis CI */
+            rsl.sort(String::compareTo);
             List<String> expected = List.of(
                     file1.getAbsolutePath(),
                     file2.getAbsolutePath(),
@@ -121,6 +126,9 @@ public class FilesSearcherTest {
             while (sc.hasNextLine()) {
                 files.add(sc.nextLine());
             }
+            /* Добавлена сортировка для исправления ошибки тестирования на
+            сервере Travis CI */
+            files.sort(String::compareTo);
             List<String> expected = List.of(
                     file2.getAbsolutePath(),
                     file3.getAbsolutePath()
@@ -131,12 +139,26 @@ public class FilesSearcherTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void whenInvalidEntryArgumentsThanException() {
+    public void whenInvalidNumberOfEntryArgumentsThanException() {
         String[] args = new String[]
                 {
                 "-d=c:/",
                 "-n=**.tmp",
                 "-t=mask"
+                };
+        FilesSearcher searcher = new FilesSearcher();
+        searcher.validate(args);
+    }
+
+
+    @Test(expected = IllegalArgumentException.class)
+    public void whenInvalidEntryArgumentThanException() {
+        String[] args = new String[]
+                {
+                        "-d=c:/",
+                        "-n=",
+                        "-t=regex",
+                        "-o=c:/target/files.txt"
                 };
         FilesSearcher searcher = new FilesSearcher();
         searcher.validate(args);
