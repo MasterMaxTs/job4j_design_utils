@@ -80,7 +80,7 @@ public class FilesSearcher {
                             + "Enter one of the values [mask, name, regex]"
             );
         }
-        return ArgsName.of(args);
+        return names;
     }
 
     public static void main(String[] args) throws IOException {
