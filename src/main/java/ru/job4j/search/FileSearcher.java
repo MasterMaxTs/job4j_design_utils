@@ -21,12 +21,11 @@ public class FileSearcher {
                         Search.search(
                                 root,
                                 p -> {
-                                    String notSupCharInFileName = "[^<>:«/\\| ]";
                                     String regex = condition.replaceAll(
-                                            "\\*", notSupCharInFileName.concat("+")
+                                            "\\*", "[^\":<>|]*"
                                             )
                                             .replaceAll(
-                                                    "\\?", notSupCharInFileName
+                                                    "\\?", "[^\":<>|]"
                                             ).replaceAll(
                                                     "\\.", "\\\\."
                                             );
