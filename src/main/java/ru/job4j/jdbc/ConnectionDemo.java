@@ -8,14 +8,10 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class ConnectionDemo {
-    private final String path;
+    private static String path;
     private final static String URL = "url";
     private final static String LOGIN = "login";
     private final static String PASSWORD = "password";
-
-    public ConnectionDemo(String path) {
-        this.path = path;
-    }
 
     public String getDataForConnection(String query) {
         Config config = new Config(path);
@@ -23,31 +19,27 @@ public class ConnectionDemo {
         return config.value(query);
     }
 
-    public void showDbMetaData(Connection connection) throws SQLException {
-        DatabaseMetaData metaData = connection.getMetaData();
-        System.out.println(metaData.getUserName());
-        System.out.println(metaData.getURL());
-    }
-
-    public void showConnectionInfo() {
-        try {
-            Class.forName("org.postgresql.Driver");
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-        try (Connection connection = DriverManager.getConnection(
+    public Connection getConnection() throws ClassNotFoundException, SQLException {
+        Class.forName("org.postgresql.Driver");
+        return DriverManager.getConnection(
                 getDataForConnection(URL),
                 getDataForConnection(LOGIN),
                 getDataForConnection(PASSWORD)
-        )) {
-            showDbMetaData(connection);
-        } catch (SQLException throwables) {
+        );
+    }
+
+    public void showConnectionInfo() {
+        try (Connection connection = getConnection()) {
+            DatabaseMetaData metaData = connection.getMetaData();
+            System.out.println(metaData.getUserName());
+            System.out.println(metaData.getURL());
+        } catch (SQLException | ClassNotFoundException throwables) {
             throwables.printStackTrace();
         }
     }
-    public static void main(String[] args) {
-        ConnectionDemo cd = new ConnectionDemo(
-                "./src/main/java/ru/job4j/jdbc/app.properties");
-        cd.showConnectionInfo();
+
+    public static void main(String[] args) throws SQLException {
+        path = "./src/main/java/ru/job4j/jdbc/app.properties";
+       new ConnectionDemo().showConnectionInfo();
     }
 }
