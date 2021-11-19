@@ -9,6 +9,7 @@ import java.sql.SQLException;
 
 public class ConnectionDemo {
     private static String path;
+    private final static String DRIVER = "driver";
     private final static String URL = "url";
     private final static String LOGIN = "login";
     private final static String PASSWORD = "password";
@@ -20,7 +21,7 @@ public class ConnectionDemo {
     }
 
     public Connection getConnection() throws ClassNotFoundException, SQLException {
-        Class.forName("org.postgresql.Driver");
+        Class.forName(this.getDataForConnection(DRIVER));
         return DriverManager.getConnection(
                 getDataForConnection(URL),
                 getDataForConnection(LOGIN),
