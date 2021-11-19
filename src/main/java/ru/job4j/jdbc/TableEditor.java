@@ -38,7 +38,7 @@ public class TableEditor implements AutoCloseable {
                 statement.execute(sql);
                 System.out.println("operation completed successfully");
                 System.out.println(
-                        getTableScheme(connection, "demo_table")
+                        getTableScheme(connection, tableName)
                 );
             } catch (Exception e) {
                 e.printStackTrace();
