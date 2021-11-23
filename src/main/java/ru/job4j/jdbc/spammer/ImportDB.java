@@ -23,11 +23,13 @@ public class ImportDB {
         )) {
             String line;
             final int POS = 0;
+            String[] arr;
             while ((line = br.readLine()) != null) {
-               users.add(new User(
-                       line.split(";")[POS],
-                       line.split(";")[POS + 1])
-               );
+                 arr = line.split(";");
+                if (arr.length < 2 || !arr[POS + 1].contains("@")) {
+                    throw new IllegalArgumentException("Incorrect data in dump.txt");
+                }
+                users.add(new User(arr[POS], arr[POS + 1]));
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -50,11 +52,10 @@ public class ImportDB {
                     ps.setString(1, user.getName());
                     ps.setString(2, user.getEmail());
                     ps.execute();
-                    System.out.println("Data has been saved in spammer db");
                 }
             }
+            System.out.println("Data has been saved in spammer db");
         }
-
     }
 
     private static class User {
