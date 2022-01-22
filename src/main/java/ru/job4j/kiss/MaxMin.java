@@ -3,15 +3,24 @@ package ru.job4j.kiss;
 import java.util.Comparator;
 import java.util.List;
 
-public class MaxMin {
+public class MaxMin<T> {
+    private final Comparator<T> sorter;
 
-    public <T> T max(List<T> value, Comparator<T> comparator) {
-        final int POS = 0;
-        value.sort(comparator);
-        return value.get(POS);
+    public MaxMin() {
+        this.sorter = new Sort<>();
     }
 
-    public <T> T min(List<T> value, Comparator<T> comparator) {
-        return max(value, comparator.reversed());
+    public T max(List<T> values) {
+        return getValue(values, sorter);
+    }
+
+    public T min(List<T> values) {
+        return getValue(values, sorter.reversed());
+    }
+
+    public T getValue(List<T> values, Comparator<T> comparator) {
+        final int POS = 0;
+        values.sort(comparator);
+        return values.get(POS);
     }
 }
