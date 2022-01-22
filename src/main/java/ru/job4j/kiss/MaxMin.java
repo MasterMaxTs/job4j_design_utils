@@ -18,7 +18,7 @@ public class MaxMin<T> {
         return getValue(values, sorter.reversed());
     }
 
-    public T getValue(List<T> values, Comparator<T> comparator) {
+    private T getValue(List<T> values, Comparator<T> comparator) {
         final int POS = 0;
         values.sort(comparator);
         return values.get(POS);
