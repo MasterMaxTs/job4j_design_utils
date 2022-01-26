@@ -9,8 +9,8 @@ class Sort<T> implements Comparator<T> {
     @Override
     public int compare(T o1, T o2) {
         if (o1.getClass().getName().endsWith(CLASS_NAME)) {
-            return o2.toString().compareTo(o1.toString());
+            return o1.toString().compareTo(o2.toString());
         }
-        return Integer.parseInt(o2.toString()) - Integer.parseInt(o1.toString());
+        return Integer.parseInt(o1.toString()) - Integer.parseInt(o2.toString());
     }
 }

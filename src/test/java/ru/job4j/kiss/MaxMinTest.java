@@ -20,13 +20,25 @@ public class MaxMinTest {
 
     @Test
     public void whenFindMinElementFromListOfStrings() {
-        List<String> strings = new ArrayList<>(List.of("c", "d", "a"));
+        List<String> strings = new ArrayList<>(List.of("c", "a", "d"));
+        assertThat(stringObj.min(strings), is("a"));
+    }
+
+    @Test
+    public void whenFindSameMinElementFromListOfStrings() {
+        List<String> strings = new ArrayList<>(List.of("c", "a", "d", "a", "e"));
         assertThat(stringObj.min(strings), is("a"));
     }
 
     @Test
     public void whenFindMaxElementFromListOfInteger() {
-        List<Integer> digits = new ArrayList<>(List.of(-4, 10, 20));
+        List<Integer> digits = new ArrayList<>(List.of(20, -4, 10));
+        assertThat(integerObj.max(digits), is(20));
+    }
+
+    @Test
+    public void whenFindSameMaxElementFromListOfInteger() {
+        List<Integer> digits = new ArrayList<>(List.of(20, -4, 10, 5, 20, 7));
         assertThat(integerObj.max(digits), is(20));
     }
 
