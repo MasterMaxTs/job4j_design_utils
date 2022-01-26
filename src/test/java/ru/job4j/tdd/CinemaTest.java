@@ -1,6 +1,7 @@
 package ru.job4j.tdd;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.Calendar;
@@ -22,16 +23,32 @@ public class CinemaTest {
         date.set(2020, Calendar.NOVEMBER, 10, 23, 15);
         cinema = new Cinema3D();
         account = new AccountCinema3D();
-        ticket = new Ticket3D(account, 1, 1, date);
+        ticket = new Ticket3D();
         session = new Session3D();
     }
 
+    @Ignore
     @Test
     public void whenBuy() {
         Ticket ticket3D = cinema.buy(account, 1, 1, date);
         assertThat(ticket3D, is(ticket));
     }
 
+    @Ignore
+    @Test (expected = IllegalArgumentException.class)
+    public void whenBuyTicketWithAnInvalidSeatThanException() {
+        Ticket ticket3D = cinema.buy(account, 10, 25, date);
+    }
+
+    @Ignore
+    @Test (expected = IllegalArgumentException.class)
+    public void whenBuyTicketWithAnInvalidDateThanException() {
+        date.set(2020, Calendar.NOVEMBER, 11, 23, 15);
+        Calendar invalidDate = date;
+        Ticket ticket3D = cinema.buy(account, 10, 2, invalidDate);
+    }
+
+    @Ignore
     @Test
     public void whenFind() {
         cinema.add(session);
@@ -39,19 +56,11 @@ public class CinemaTest {
         assertThat(sessions, is(List.of(session)));
     }
 
-    @Test
-    public void whenAdd() {
-        Cinema3D cinema3D = new Cinema3D();
-        cinema3D.add(session);
-        assertThat(
-                cinema3D.getSessions(), is(List.of(session))
-        );
-    }
-
-    @Test
-    public void whenNoFind() {
-        cinema.add(session);
-        List<Session> sessions = cinema.find(session -> false);
-        assertThat(sessions, is(List.of()));
+    @Ignore
+    @Test (expected = IllegalArgumentException.class)
+    public void whenBuyTicketWithRedeemedSeatThanException() {
+        Account account2 = new AccountCinema3D();
+        Ticket ticket1 = cinema.buy(account, 10, 2, date);
+        Ticket ticket2 = cinema.buy(account2, 10, 2, date);
     }
 }
