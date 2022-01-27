@@ -1,6 +1,7 @@
 package ru.job4j.tdd.template;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
+import static org.hamcrest.Matchers.is;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -12,48 +13,64 @@ public class GeneratorTest {
 
     private Generator templateGenerator;
     private Map<String, String> args;
+    private String template;
 
     @Before
     public void whenSetUp() {
         templateGenerator = new TemplateEngine();
         args = new HashMap<>(
                 Map.of(
-                        "key1", "value1",
-                        "key2", "value2",
-                        "key3", "value3"
+                        "name", "Petr",
+                        "subject", "you"
                 )
         );
+        template = "I am a ${name}, Who are ${subject}?";
     }
 
     @Ignore
     @Test
     public void whenGenerate() {
-        String template = "I am a ${key1}, Who are ${key2}?";
         String result = templateGenerator.produce(template, args);
-        String expected = String.format(
-                template.replaceAll("\\$\\{[^}]+}", "%s"),
-                args.get("key1"), args.get("key2")
-        );
-        assertEquals(expected, result);
+        String expected = "I am a Petr, Who are you?";
+        assertThat(result, is(expected));
     }
 
     @Ignore
     @Test (expected = IllegalArgumentException.class)
     public void whenKeyIsNotExistsThanException() {
-        String template = "I am a ${}, Who are ${key2}?";
-        String result = templateGenerator.produce(template, args);
+        Map<String, String> map = Map.of("name", "Petr");
+        templateGenerator.produce(template, map);
     }
 
     @Ignore
     @Test (expected = IllegalArgumentException.class)
     public void whenUnknownKeyInTemplateThanException() {
-        String template = "I am a ${key4}, Who are ${key2}?";
-        String result = templateGenerator.produce(template, args);
+        Map<String, String> map = Map.of(
+                "name", "Petr",
+                "otherKey", "you"
+        );
+        templateGenerator.produce(template, map);
+    }
+
+    @Ignore
+    @Test (expected = IllegalArgumentException.class)
+    public void whenUnknownValueThanException() {
+        Map<String, String> map = Map.of(
+                "name", "Maxim",
+                "subject", "you"
+        );
+        templateGenerator.produce(template, map);
     }
 
     @Ignore
     @Test (expected = IllegalArgumentException.class)
     public void whenThereAreExtraKeysInTheMapThanException() {
+        Map<String, String> map = Map.of(
+                "name", "Petr",
+                "subject", "you",
+                "otherKey", "otherValue"
 
+        );
+        templateGenerator.produce(template, map);
     }
 }
