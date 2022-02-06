@@ -1,14 +1,14 @@
 package ru.job4j.ood.srp.reports;
 
 import java.io.IOException;
-import java.io.OutputStream;
-import java.net.ServerSocket;
-import java.net.Socket;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.function.Predicate;
 
 public class ItReport extends ReportEngine {
 
-    private final int port = 8090;
+    private static final String FILE = "./src/main/java/ru/job4j/ood/srp"
+            + "/reports/html/template.html";
 
     public ItReport(Store store) {
         super(store);
@@ -27,19 +27,21 @@ public class ItReport extends ReportEngine {
             text.append(emp.getSalary()).append(";");
             text.append(ls);
         }
-        String msg = text.toString();
-        try  (ServerSocket server = new ServerSocket(port)) {
-            while (!server.isClosed()) {
-                Socket socket = server.accept();
-                try (OutputStream out = socket.getOutputStream()) {
-                    out.write("HTTP/1.1 200 OK\r\n\r\n".getBytes());
-                    out.write(msg.getBytes());
-                    out.flush();
-                }
-            }
+        return text.toString();
+    }
+
+    public String getHtmlReport(String title, String body) {
+        Path path = Path.of(FILE);
+        String rsl = "";
+        try {
+            String read = Files.readString(path);
+            rsl = read.replace("$title", title).replace("$body", body);
+            Files.writeString(path, rsl);
+            System.out.println("HTML Report was generated successfully and written to a file: "
+                    + FILE);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return msg;
+        return rsl;
     }
 }
