@@ -7,7 +7,7 @@ import java.util.function.Predicate;
 
 public class ItReport extends ReportEngine {
 
-    private static final String FILE = "./src/main/java/ru/job4j/ood/srp"
+    private static final String FILE_TEMPLATE = "./src/main/java/ru/job4j/ood/srp"
             + "/reports/html/template.html";
 
     public ItReport(Store store) {
@@ -30,15 +30,16 @@ public class ItReport extends ReportEngine {
         return text.toString();
     }
 
-    public String getHtmlReport(String title, String body) {
-        Path path = Path.of(FILE);
+    public String getHtmlReport(String title, String body, String outFile) {
+        Path path = Path.of(FILE_TEMPLATE);
+        Path outPath = Path.of(outFile);
         String rsl = "";
         try {
             String read = Files.readString(path);
             rsl = read.replace("$title", title).replace("$body", body);
-            Files.writeString(path, rsl);
+            Files.writeString(outPath, rsl);
             System.out.println("HTML Report was generated successfully and written to a file: "
-                    + FILE);
+                    + outFile);
         } catch (IOException e) {
             e.printStackTrace();
         }

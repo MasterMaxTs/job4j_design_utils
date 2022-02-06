@@ -11,8 +11,10 @@ public class Starter {
         memStore.add(emp1);
         memStore.add(emp2);
         ItReport itr = new ItReport(memStore);
+        String outFile = "./src/main/java/ru/job4j/ood/srp"
+                + "/reports/html/report.html";
         System.out.println(
-                itr.getHtmlReport("IT_Report", itr.generate(em -> true))
+                itr.getHtmlReport("IT_Report", itr.generate(em -> true), outFile)
         );
     }
 }
