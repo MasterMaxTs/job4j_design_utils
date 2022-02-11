@@ -30,7 +30,7 @@ public class ItReport extends ReportEngine {
             html.append(ls);
         }
         html.append("</body>").append(ls);
-        html.append("</html>").append(ls);
+        html.append("</html>");
         return html.toString();
     }
 }

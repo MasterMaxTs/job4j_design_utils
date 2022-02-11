@@ -13,10 +13,42 @@ import static org.junit.Assert.assertEquals;
 public class ReportEngineTest {
 
     private MemStore memStore;
+    private Store store;
+    private static String ls;
+
+    private String getTextReport() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Name; Hired; Fired; Salary").append(ls);
+        for (Employee emp
+                : memStore.getEmployees()) {
+            sb.append(emp.getName()).append(";");
+            sb.append(emp.getHired()).append(";");
+            sb.append(emp.getFired()).append(";");
+            sb.append(emp.getSalary()).append(";");
+            sb.append(ls);
+        }
+        return sb.toString();
+    }
+
+    private String getTextHrReport() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Name; Salary").append(ls);
+        List<Employee> employees = memStore.getEmployees();
+        employees.sort(Comparator.comparing(Employee::getSalary).reversed());
+        for (Employee emp
+                : employees) {
+            sb.append(emp.getName()).append(";");
+            sb.append(emp.getSalary()).append(";");
+            sb.append(ls);
+        }
+        return sb.toString();
+    }
 
     @Before
     public void whenSetUp() {
         memStore = new MemStore();
+        store = memStore;
+        ls = System.lineSeparator();
         Calendar now = Calendar.getInstance();
         Employee emp1 = new Employee("Igor", now, now, 84000);
         Employee emp2 = new Employee("Viktor", now, now, 112000);
@@ -26,7 +58,7 @@ public class ReportEngineTest {
 
     @Test
     public void whenConvertSalaryToAnotherCurrency() {
-        AccountingReport acr = new AccountingReport(memStore);
+        AccountingReport acr = new AccountingReport(store);
         double coefficient = 0.5;
         List<Double> expected = List.of((double) 42000, (double) 56000);
         List<Double> rsl = acr.modifySalary(
@@ -39,41 +71,42 @@ public class ReportEngineTest {
 
     @Test
     public void whenGenerateReportForAccountingDepartment() {
-        Store store = memStore;
-        StringBuilder sb = new StringBuilder();
-        String ls = System.lineSeparator();
-        sb.append("Name; Hired; Fired; Salary").append(ls);
-        for (Employee emp
-                : memStore.getEmployees()) {
-            sb.append(emp.getName()).append(";");
-            sb.append(emp.getHired()).append(";");
-            sb.append(emp.getFired()).append(";");
-            sb.append(emp.getSalary()).append(";");
-            sb.append(ls);
-        }
-        String expected = sb.toString();
+        String expected = getTextReport();
         AccountingReport acr = new AccountingReport(store);
-        String rsl = acr.generate(em -> true);
-        assertEquals(expected, rsl);
+        assertEquals(expected, acr.generate(em -> true));
     }
 
     @Test
     public void whenGenerateReportForHRDepartment() {
-        Store store = memStore;
-        StringBuilder sb = new StringBuilder();
-        String ls = System.lineSeparator();
-        sb.append("Name; Salary").append(ls);
-        List<Employee> employees = memStore.getEmployees();
-        employees.sort(Comparator.comparing(Employee::getSalary).reversed());
-        for (Employee emp
-                : employees) {
-            sb.append(emp.getName()).append(";");
-            sb.append(emp.getSalary()).append(";");
-            sb.append(ls);
-        }
-        String expected = sb.toString();
+        String expected = getTextHrReport();
         HrReport hrr = new HrReport(store);
-        String rsl = hrr.generate(em -> true);
-        assertEquals(expected, rsl);
+        assertEquals(expected, hrr.generate(em -> true));
+    }
+
+    @Test
+    public void whenGenerateReportForITDepartment() {
+        String text = getTextReport();
+        String template = "<!DOCTYPE html>"
+                            + ls
+                            + "<html>"
+                            + ls
+                            + "<head>"
+                            + ls
+                            + "<meta http-equiv=\"Content-Type\" "
+                            + "content=\"text/html; charset=UTF-8\">"
+                            + ls
+                            + "<title>Report</title>"
+                            + ls
+                            + "</head>"
+                            + ls
+                            + "<body>"
+                            + ls
+                            + "$body"
+                            + "</body>"
+                            + ls
+                            + "</html>";
+        String expected = template.replace("$body", text);
+        ItReport itr = new ItReport(store);
+        assertEquals(expected, itr.generate(em -> true));
     }
 }
