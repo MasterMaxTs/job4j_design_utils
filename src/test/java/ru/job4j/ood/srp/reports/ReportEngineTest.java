@@ -4,9 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Calendar;
-import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static org.junit.Assert.assertEquals;
 
@@ -14,44 +12,17 @@ public class ReportEngineTest {
 
     private MemStore memStore;
     private Store store;
+    private Calendar now;
     private static String ls;
-
-    private String getTextReport() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("Name; Hired; Fired; Salary").append(ls);
-        for (Employee emp
-                : memStore.getEmployees()) {
-            sb.append(emp.getName()).append(";");
-            sb.append(emp.getHired()).append(";");
-            sb.append(emp.getFired()).append(";");
-            sb.append(emp.getSalary()).append(";");
-            sb.append(ls);
-        }
-        return sb.toString();
-    }
-
-    private String getTextHrReport() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("Name; Salary").append(ls);
-        List<Employee> employees = memStore.getEmployees();
-        employees.sort(Comparator.comparing(Employee::getSalary).reversed());
-        for (Employee emp
-                : employees) {
-            sb.append(emp.getName()).append(";");
-            sb.append(emp.getSalary()).append(";");
-            sb.append(ls);
-        }
-        return sb.toString();
-    }
 
     @Before
     public void whenSetUp() {
         memStore = new MemStore();
         store = memStore;
         ls = System.lineSeparator();
-        Calendar now = Calendar.getInstance();
-        Employee emp1 = new Employee("Igor", now, now, 84000);
-        Employee emp2 = new Employee("Viktor", now, now, 112000);
+        now = Calendar.getInstance();
+        Employee emp1 = new Employee("Igor", now, now, 84000.0);
+        Employee emp2 = new Employee("Viktor", now, now, 112000.0);
         memStore.add(emp1);
         memStore.add(emp2);
     }
@@ -60,32 +31,62 @@ public class ReportEngineTest {
     public void whenConvertSalaryToAnotherCurrency() {
         AccountingReport acr = new AccountingReport(store);
         double coefficient = 0.5;
+        List<Employee> employees = acr.modifySalary(memStore.getEmployees(),
+                coefficient);
+        List<Double> rsl = List.of(
+                employees.get(0).getSalary(),
+                employees.get(1).getSalary()
+        );
         List<Double> expected = List.of((double) 42000, (double) 56000);
-        List<Double> rsl = acr.modifySalary(
-                memStore.getEmployees(), coefficient)
-                .stream()
-                .map(Employee::getSalary)
-                .collect(Collectors.toList());
         assertEquals(expected, rsl);
    }
 
     @Test
     public void whenGenerateReportForAccountingDepartment() {
-        String expected = getTextReport();
+        String expected = "Name; Hired; Fired; Salary"
+                            + ls
+                            + "Igor;"
+                            + now + ";"
+                            + now + ";"
+                            + 84000.0 + ";"
+                            + ls
+                            + "Viktor;"
+                            + now + ";"
+                            + now + ";"
+                            + 112000.0 + ";"
+                            + ls;
         AccountingReport acr = new AccountingReport(store);
         assertEquals(expected, acr.generate(em -> true));
     }
 
     @Test
     public void whenGenerateReportForHRDepartment() {
-        String expected = getTextHrReport();
+        String expected = "Name; Salary"
+                            + ls
+                            + "Viktor;"
+                            + 112000.0 + ";"
+                            + ls
+                            + "Igor;"
+                            + 84000.0 + ";"
+                            + ls;
         HrReport hrr = new HrReport(store);
         assertEquals(expected, hrr.generate(em -> true));
     }
 
     @Test
     public void whenGenerateReportForITDepartment() {
-        String text = getTextReport();
+        String text = "Name; Hired; Fired; Salary"
+                        + ls
+                        + "Igor;"
+                        + now + ";"
+                        + now + ";"
+                        + 84000.0 + ";"
+                        + ls
+                        + "Viktor;"
+                        + now + ";"
+                        + now + ";"
+                        + 112000.0 + ";"
+                        + ls;
         String template = "<!DOCTYPE html>"
                             + ls
                             + "<html>"
