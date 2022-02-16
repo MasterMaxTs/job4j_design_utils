@@ -1,8 +1,14 @@
 package ru.job4j.ood.srp.reports;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import org.junit.Before;
 import org.junit.Test;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Unmarshaller;
+import java.io.StringReader;
 import java.util.Calendar;
 import java.util.List;
 
@@ -109,5 +115,43 @@ public class ReportEngineTest {
         String expected = template.replace("$body", text);
         ItReport itr = new ItReport(store);
         assertEquals(expected, itr.generate(em -> true));
+    }
+    @Test
+    public void whenGenerateReportInGSONFormat() {
+        JsonReport jsr = new JsonReport(store);
+        Gson gson = new GsonBuilder().create();
+        String jsonCalendar = gson.toJson(now);
+        String expected = "[{"
+                + "\"name\":\"Igor\","
+                + "\"hired\":" + jsonCalendar + ","
+                + "\"fired\":" + jsonCalendar + ","
+                + "\"salary\":84000.0"
+                + "},"
+                + "{"
+                + "\"name\":\"Viktor\","
+                + "\"hired\":" + jsonCalendar + ","
+                + "\"fired\":" + jsonCalendar + ","
+                + "\"salary\":112000.0"
+                + "}]";
+        assertEquals(expected, jsr.generate(em -> true));
+    }
+
+    @Test
+    public void whenGenerateReportInXMLFormat() throws JAXBException {
+        XmlReport xmr = new XmlReport(store);
+        List<Employee> expected = List.of(
+                new Employee("Igor", now, now, 84000.0),
+                new Employee("Viktor", now, now, 112000.0)
+        );
+        List<Employee> rsl;
+        String xml = xmr.generate(em -> true);
+        JAXBContext context = JAXBContext.newInstance(Pair.class);
+        Unmarshaller unmarshaller = context.createUnmarshaller();
+        try (StringReader sr =
+                     new StringReader(xml)) {
+            Pair pair = (Pair) unmarshaller.unmarshal(sr);
+            rsl = pair.getEmployees();
+        }
+        assertEquals(expected, rsl);
     }
 }
