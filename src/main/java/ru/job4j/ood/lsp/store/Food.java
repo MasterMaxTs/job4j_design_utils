@@ -44,7 +44,7 @@ public class Food {
         this.price = price;
     }
 
-    public double getDiscount() {
+    public int getDiscount() {
         return discount;
     }
 
@@ -56,7 +56,7 @@ public class Food {
                 + ", expiryDate=" + expiryDate.getTime()
                 + ", createDate=" + createDate.getTime()
                 + ", price=" + price
-                + ", discount=" + discount
+                + ", discount:" + discount + "%"
                 + '}';
     }
 

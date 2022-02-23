@@ -12,15 +12,11 @@ import static org.junit.Assert.assertEquals;
 
 public class FoodStorageTest {
 
-    private static Calendar current;
     private List<Food> products;
-    private Store store;
-    private Strategy strategy;
-    private ControlQuality controlQuality;
+    private List<Store> stores;
 
     @Before
     public void whenSetUp() {
-        current = Calendar.getInstance();
         products = List.of(
                 new DairyProducts(
                         "Milk",
@@ -45,7 +41,7 @@ public class FoodStorageTest {
                 ),
                 new BakeryProducts(
                         "Pretzel",
-                        new GregorianCalendar(2022, Calendar.FEBRUARY, 20),
+                        new GregorianCalendar(2022, Calendar.FEBRUARY, 25),
                         new GregorianCalendar(2022, Calendar.FEBRUARY, 17),
                         100,
                         20
@@ -57,18 +53,19 @@ public class FoodStorageTest {
                     50,
                     10
         ));
+        stores = List.of(
+                new Warehouse(),
+                new Shop(),
+                new Trash()
+        );
     }
 
     @Test
     public void whenDistributeProductsToShop() {
-        store = new Shop();
-        strategy = new ShopControlQuality(store);
-        controlQuality = new ControlQuality(strategy);
-        controlQuality.execute(products, current);
         List<Food> expected = new ArrayList<>(List.of(
                 new BakeryProducts(
                         "Pretzel",
-                        new GregorianCalendar(2022, Calendar.FEBRUARY, 20),
+                        new GregorianCalendar(2022, Calendar.FEBRUARY, 25),
                         new GregorianCalendar(2022, Calendar.FEBRUARY, 17),
                         80,
                         20
@@ -81,16 +78,13 @@ public class FoodStorageTest {
                         10
                 ))
         );
-        List<Food> rsl = store.get();
+        ControlQuality.distribute(products, stores);
+        List<Food> rsl = stores.get(1).get();
         assertEquals(expected, rsl);
     }
 
     @Test
     public void whenDistributeProductsToWarehouse() {
-        store = new Warehouse();
-        strategy = new WhControlQuality(store);
-        controlQuality = new ControlQuality(strategy);
-        controlQuality.execute(products, current);
         List<Food> expected = new ArrayList<>(List.of(
                 new DairyProducts(
                         "Cheese",
@@ -100,16 +94,13 @@ public class FoodStorageTest {
                         10
                 ))
         );
-        List<Food> rsl = store.get();
+        ControlQuality.distribute(products, stores);
+        List<Food> rsl = stores.get(0).get();
         assertEquals(expected, rsl);
     }
 
     @Test
     public void whenDistributeProductsToTrash() {
-        store = new Trash();
-        strategy = new TrashControl(store);
-        controlQuality = new ControlQuality(strategy);
-        controlQuality.execute(products, current);
         List<Food> expected = new ArrayList<>(List.of(
                 new DairyProducts(
                         "Milk",
@@ -126,7 +117,8 @@ public class FoodStorageTest {
                         5
                 ))
         );
-        List<Food> rsl = store.get();
+        ControlQuality.distribute(products, stores);
+        List<Food> rsl = stores.get(2).get();
         assertEquals(expected, rsl);
     }
 }

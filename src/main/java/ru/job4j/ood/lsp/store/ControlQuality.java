@@ -1,17 +1,16 @@
 package ru.job4j.ood.lsp.store;
 
-import java.util.Calendar;
 import java.util.List;
 
 public class ControlQuality {
 
-    private final Strategy strategy;
-
-    public ControlQuality(Strategy strategy) {
-        this.strategy = strategy;
-    }
-
-    public void execute(List<Food> products, Calendar currentDate) {
-        strategy.redistribute(products, currentDate);
-    }
+    public static void distribute(List<Food> foods, List<Store> stores) {
+        stores.forEach(
+                store -> {
+                        for (Food f
+                                : foods) {
+                            store.add(f);
+                        }
+                });
+        }
 }

@@ -8,8 +8,12 @@ public class Trash extends Store {
     private final List<Food> trProducts = new ArrayList<>();
 
     @Override
-    public void add(Food product) {
-        trProducts.add(product);
+    public boolean add(Food product) {
+        if (accept(product)) {
+            trProducts.add(product);
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -19,6 +23,11 @@ public class Trash extends Store {
 
     @Override
     public List<Food> get() {
-        return trProducts;
+        return new ArrayList<>(trProducts);
+    }
+
+    @Override
+    public boolean accept(Food food) {
+        return delta(food) <= 0;
     }
 }
