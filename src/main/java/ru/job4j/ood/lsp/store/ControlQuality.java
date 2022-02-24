@@ -9,7 +9,9 @@ public class ControlQuality {
                 store -> {
                         for (Food f
                                 : foods) {
-                            store.add(f);
+                            if (store.accept(f)) {
+                                store.add(f);
+                            }
                         }
                 });
         }

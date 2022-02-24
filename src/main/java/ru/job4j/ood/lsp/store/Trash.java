@@ -9,11 +9,12 @@ public class Trash extends Store {
 
     @Override
     public boolean add(Food product) {
+        boolean rsl = false;
         if (accept(product)) {
             trProducts.add(product);
-            return true;
+            rsl = true;
         }
-        return false;
+        return rsl;
     }
 
     @Override

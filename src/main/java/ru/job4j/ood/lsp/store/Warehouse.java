@@ -9,11 +9,12 @@ public class Warehouse extends Store {
 
     @Override
     public boolean add(Food product) {
+        boolean rsl = false;
         if (accept(product)) {
             whProducts.add(product);
-            return true;
+            rsl = true;
         }
-        return false;
+        return rsl;
     }
 
     @Override

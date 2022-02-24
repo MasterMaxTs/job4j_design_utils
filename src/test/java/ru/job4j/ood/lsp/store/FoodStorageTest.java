@@ -14,45 +14,71 @@ public class FoodStorageTest {
 
     private List<Food> products;
     private List<Store> stores;
+    private static final Calendar now = Store.current;
 
     @Before
     public void whenSetUp() {
         products = List.of(
                 new DairyProducts(
                         "Milk",
-                        new GregorianCalendar(2022, Calendar.FEBRUARY, 19),
-                        new GregorianCalendar(2021, Calendar.DECEMBER, 30),
+                        new GregorianCalendar(
+                                now.get(Calendar.YEAR),
+                                now.get(Calendar.MONTH),
+                                now.get(Calendar.DAY_OF_MONTH)
+                        ),
+                        new GregorianCalendar(
+                        now.get(Calendar.YEAR),
+                        now.get(Calendar.MONTH),
+                        now.get(Calendar.DAY_OF_MONTH) - 1
+                        ),
                         80.5,
                         15
                 ),
                 new BakeryProducts(
                         "Bread",
-                        new GregorianCalendar(2022, Calendar.FEBRUARY, 14),
-                        new GregorianCalendar(2022, Calendar.FEBRUARY, 10),
+                        new GregorianCalendar(
+                                now.get(Calendar.YEAR),
+                                now.get(Calendar.MONTH),
+                                now.get(Calendar.DAY_OF_MONTH) + 3
+                        ),
+                        new GregorianCalendar(
+                                now.get(Calendar.YEAR),
+                                now.get(Calendar.MONTH),
+                                now.get(Calendar.DAY_OF_MONTH) - 1
+                        ),
                         45.0,
                         5
                 ),
                 new DairyProducts(
                         "Cheese",
-                        new GregorianCalendar(2022, Calendar.NOVEMBER, 28),
-                        new GregorianCalendar(2022, Calendar.JANUARY, 3),
+                        new GregorianCalendar(
+                                now.get(Calendar.YEAR),
+                                now.get(Calendar.MONTH),
+                                now.get(Calendar.DAY_OF_MONTH) + 21
+                        ),
+                        new GregorianCalendar(
+                                now.get(Calendar.YEAR),
+                                now.get(Calendar.MONTH),
+                                now.get(Calendar.DAY_OF_MONTH)
+                        ),
                         240.7,
                         10
                 ),
                 new BakeryProducts(
                         "Pretzel",
-                        new GregorianCalendar(2022, Calendar.FEBRUARY, 25),
-                        new GregorianCalendar(2022, Calendar.FEBRUARY, 17),
+                        new GregorianCalendar(
+                                now.get(Calendar.YEAR),
+                                now.get(Calendar.MONTH),
+                                now.get(Calendar.DAY_OF_MONTH) + 1
+                        ),
+                        new GregorianCalendar(
+                                now.get(Calendar.YEAR),
+                                now.get(Calendar.MONTH),
+                                now.get(Calendar.DAY_OF_MONTH) - 5
+                        ),
                         100,
                         20
-                ),
-                new DairyProducts(
-                    "Yogurt",
-                    new GregorianCalendar(2022, Calendar.MARCH, 1),
-                    new GregorianCalendar(2022, Calendar.FEBRUARY, 15),
-                    50,
-                    10
-        ));
+                ));
         stores = List.of(
                 new Warehouse(),
                 new Shop(),
@@ -64,20 +90,36 @@ public class FoodStorageTest {
     public void whenDistributeProductsToShop() {
         List<Food> expected = new ArrayList<>(List.of(
                 new BakeryProducts(
+                        "Bread",
+                        new GregorianCalendar(
+                                now.get(Calendar.YEAR),
+                                now.get(Calendar.MONTH),
+                                now.get(Calendar.DAY_OF_MONTH) + 3
+                        ),
+                        new GregorianCalendar(
+                                now.get(Calendar.YEAR),
+                                now.get(Calendar.MONTH),
+                                now.get(Calendar.DAY_OF_MONTH) - 1
+                        ),
+                        45.0,
+                        5
+                ),
+                new BakeryProducts(
                         "Pretzel",
-                        new GregorianCalendar(2022, Calendar.FEBRUARY, 25),
-                        new GregorianCalendar(2022, Calendar.FEBRUARY, 17),
+                        new GregorianCalendar(
+                                now.get(Calendar.YEAR),
+                                now.get(Calendar.MONTH),
+                                now.get(Calendar.DAY_OF_MONTH) + 1
+                        ),
+                        new GregorianCalendar(
+                                now.get(Calendar.YEAR),
+                                now.get(Calendar.MONTH),
+                                now.get(Calendar.DAY_OF_MONTH) - 5
+                        ),
                         80,
                         20
-                ),
-                new DairyProducts(
-                        "Yogurt",
-                        new GregorianCalendar(2022, Calendar.MARCH, 1),
-                        new GregorianCalendar(2022, Calendar.FEBRUARY, 15),
-                        50,
-                        10
-                ))
-        );
+                )
+        ));
         ControlQuality.distribute(products, stores);
         List<Food> rsl = stores.get(1).get();
         assertEquals(expected, rsl);
@@ -88,12 +130,20 @@ public class FoodStorageTest {
         List<Food> expected = new ArrayList<>(List.of(
                 new DairyProducts(
                         "Cheese",
-                        new GregorianCalendar(2022, Calendar.NOVEMBER, 28),
-                        new GregorianCalendar(2022, Calendar.JANUARY, 3),
+                        new GregorianCalendar(
+                                now.get(Calendar.YEAR),
+                                now.get(Calendar.MONTH),
+                                now.get(Calendar.DAY_OF_MONTH) + 21
+                        ),
+                        new GregorianCalendar(
+                                now.get(Calendar.YEAR),
+                                now.get(Calendar.MONTH),
+                                now.get(Calendar.DAY_OF_MONTH)
+                        ),
                         240.7,
                         10
-                ))
-        );
+                )
+        ));
         ControlQuality.distribute(products, stores);
         List<Food> rsl = stores.get(0).get();
         assertEquals(expected, rsl);
@@ -104,19 +154,20 @@ public class FoodStorageTest {
         List<Food> expected = new ArrayList<>(List.of(
                 new DairyProducts(
                         "Milk",
-                        new GregorianCalendar(2022, Calendar.FEBRUARY, 19),
-                        new GregorianCalendar(2021, Calendar.DECEMBER, 30),
+                        new GregorianCalendar(
+                                now.get(Calendar.YEAR),
+                                now.get(Calendar.MONTH),
+                                now.get(Calendar.DAY_OF_MONTH)
+                        ),
+                        new GregorianCalendar(
+                                now.get(Calendar.YEAR),
+                                now.get(Calendar.MONTH),
+                                now.get(Calendar.DAY_OF_MONTH) - 1
+                        ),
                         80.5,
                         15
-                ),
-                new BakeryProducts(
-                        "Bread",
-                        new GregorianCalendar(2022, Calendar.FEBRUARY, 14),
-                        new GregorianCalendar(2022, Calendar.FEBRUARY, 10),
-                        45.0,
-                        5
-                ))
-        );
+                )
+        ));
         ControlQuality.distribute(products, stores);
         List<Food> rsl = stores.get(2).get();
         assertEquals(expected, rsl);

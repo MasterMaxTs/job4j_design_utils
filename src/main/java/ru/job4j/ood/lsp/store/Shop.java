@@ -9,11 +9,18 @@ public class Shop extends Store {
 
     @Override
     public boolean add(Food product) {
+        boolean rsl = false;
         if (accept(product)) {
             shProducts.add(product);
-            return true;
+            if (delta(product) > 0 && delta(product) < 0.25) {
+                product.setPrice(
+                        product.getPrice() * (1 - (double) product.getDiscount() / 100)
+                );
+                getDiscountInfo(product);
+            }
+            rsl = true;
         }
-        return false;
+        return rsl;
     }
 
     @Override
@@ -27,18 +34,8 @@ public class Shop extends Store {
     }
 
     @Override
-    public boolean accept(Food food) {
-        if (delta(food) >= 0.25 && delta(food) <= 0.75) {
-            return true;
-        }
-        if (delta(food) > 0 && delta(food) < 0.25) {
-            food.setPrice(
-                    food.getPrice() * (1 - (double) food.getDiscount() / 100)
-            );
-            getDiscountInfo(food);
-            return true;
-        }
-        return false;
+    public boolean accept(Food product) {
+        return delta(product) > 0 && delta(product) <= 0.75;
     }
 
     private void getDiscountInfo(Food food) {
