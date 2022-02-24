@@ -14,7 +14,7 @@ public class FoodStorageTest {
 
     private List<Food> products;
     private List<Store> stores;
-    private static final Calendar now = Store.current;
+    private static final Calendar NOW = Store.current;
 
     @Before
     public void whenSetUp() {
@@ -22,14 +22,14 @@ public class FoodStorageTest {
                 new DairyProducts(
                         "Milk",
                         new GregorianCalendar(
-                                now.get(Calendar.YEAR),
-                                now.get(Calendar.MONTH),
-                                now.get(Calendar.DAY_OF_MONTH)
+                                NOW.get(Calendar.YEAR),
+                                NOW.get(Calendar.MONTH),
+                                NOW.get(Calendar.DAY_OF_MONTH)
                         ),
                         new GregorianCalendar(
-                        now.get(Calendar.YEAR),
-                        now.get(Calendar.MONTH),
-                        now.get(Calendar.DAY_OF_MONTH) - 1
+                        NOW.get(Calendar.YEAR),
+                        NOW.get(Calendar.MONTH),
+                        NOW.get(Calendar.DAY_OF_MONTH) - 1
                         ),
                         80.5,
                         15
@@ -37,14 +37,14 @@ public class FoodStorageTest {
                 new BakeryProducts(
                         "Bread",
                         new GregorianCalendar(
-                                now.get(Calendar.YEAR),
-                                now.get(Calendar.MONTH),
-                                now.get(Calendar.DAY_OF_MONTH) + 3
+                                NOW.get(Calendar.YEAR),
+                                NOW.get(Calendar.MONTH),
+                                NOW.get(Calendar.DAY_OF_MONTH) + 3
                         ),
                         new GregorianCalendar(
-                                now.get(Calendar.YEAR),
-                                now.get(Calendar.MONTH),
-                                now.get(Calendar.DAY_OF_MONTH) - 1
+                                NOW.get(Calendar.YEAR),
+                                NOW.get(Calendar.MONTH),
+                                NOW.get(Calendar.DAY_OF_MONTH) - 1
                         ),
                         45.0,
                         5
@@ -52,14 +52,14 @@ public class FoodStorageTest {
                 new DairyProducts(
                         "Cheese",
                         new GregorianCalendar(
-                                now.get(Calendar.YEAR),
-                                now.get(Calendar.MONTH),
-                                now.get(Calendar.DAY_OF_MONTH) + 21
+                                NOW.get(Calendar.YEAR),
+                                NOW.get(Calendar.MONTH),
+                                NOW.get(Calendar.DAY_OF_MONTH) + 21
                         ),
                         new GregorianCalendar(
-                                now.get(Calendar.YEAR),
-                                now.get(Calendar.MONTH),
-                                now.get(Calendar.DAY_OF_MONTH)
+                                NOW.get(Calendar.YEAR),
+                                NOW.get(Calendar.MONTH),
+                                NOW.get(Calendar.DAY_OF_MONTH)
                         ),
                         240.7,
                         10
@@ -67,14 +67,14 @@ public class FoodStorageTest {
                 new BakeryProducts(
                         "Pretzel",
                         new GregorianCalendar(
-                                now.get(Calendar.YEAR),
-                                now.get(Calendar.MONTH),
-                                now.get(Calendar.DAY_OF_MONTH) + 1
+                                NOW.get(Calendar.YEAR),
+                                NOW.get(Calendar.MONTH),
+                                NOW.get(Calendar.DAY_OF_MONTH) + 1
                         ),
                         new GregorianCalendar(
-                                now.get(Calendar.YEAR),
-                                now.get(Calendar.MONTH),
-                                now.get(Calendar.DAY_OF_MONTH) - 5
+                                NOW.get(Calendar.YEAR),
+                                NOW.get(Calendar.MONTH),
+                                NOW.get(Calendar.DAY_OF_MONTH) - 5
                         ),
                         100,
                         20
@@ -92,14 +92,14 @@ public class FoodStorageTest {
                 new BakeryProducts(
                         "Bread",
                         new GregorianCalendar(
-                                now.get(Calendar.YEAR),
-                                now.get(Calendar.MONTH),
-                                now.get(Calendar.DAY_OF_MONTH) + 3
+                                NOW.get(Calendar.YEAR),
+                                NOW.get(Calendar.MONTH),
+                                NOW.get(Calendar.DAY_OF_MONTH) + 3
                         ),
                         new GregorianCalendar(
-                                now.get(Calendar.YEAR),
-                                now.get(Calendar.MONTH),
-                                now.get(Calendar.DAY_OF_MONTH) - 1
+                                NOW.get(Calendar.YEAR),
+                                NOW.get(Calendar.MONTH),
+                                NOW.get(Calendar.DAY_OF_MONTH) - 1
                         ),
                         45.0,
                         5
@@ -107,14 +107,14 @@ public class FoodStorageTest {
                 new BakeryProducts(
                         "Pretzel",
                         new GregorianCalendar(
-                                now.get(Calendar.YEAR),
-                                now.get(Calendar.MONTH),
-                                now.get(Calendar.DAY_OF_MONTH) + 1
+                                NOW.get(Calendar.YEAR),
+                                NOW.get(Calendar.MONTH),
+                                NOW.get(Calendar.DAY_OF_MONTH) + 1
                         ),
                         new GregorianCalendar(
-                                now.get(Calendar.YEAR),
-                                now.get(Calendar.MONTH),
-                                now.get(Calendar.DAY_OF_MONTH) - 5
+                                NOW.get(Calendar.YEAR),
+                                NOW.get(Calendar.MONTH),
+                                NOW.get(Calendar.DAY_OF_MONTH) - 5
                         ),
                         80,
                         20
@@ -131,14 +131,14 @@ public class FoodStorageTest {
                 new DairyProducts(
                         "Cheese",
                         new GregorianCalendar(
-                                now.get(Calendar.YEAR),
-                                now.get(Calendar.MONTH),
-                                now.get(Calendar.DAY_OF_MONTH) + 21
+                                NOW.get(Calendar.YEAR),
+                                NOW.get(Calendar.MONTH),
+                                NOW.get(Calendar.DAY_OF_MONTH) + 21
                         ),
                         new GregorianCalendar(
-                                now.get(Calendar.YEAR),
-                                now.get(Calendar.MONTH),
-                                now.get(Calendar.DAY_OF_MONTH)
+                                NOW.get(Calendar.YEAR),
+                                NOW.get(Calendar.MONTH),
+                                NOW.get(Calendar.DAY_OF_MONTH)
                         ),
                         240.7,
                         10
@@ -155,14 +155,14 @@ public class FoodStorageTest {
                 new DairyProducts(
                         "Milk",
                         new GregorianCalendar(
-                                now.get(Calendar.YEAR),
-                                now.get(Calendar.MONTH),
-                                now.get(Calendar.DAY_OF_MONTH)
+                                NOW.get(Calendar.YEAR),
+                                NOW.get(Calendar.MONTH),
+                                NOW.get(Calendar.DAY_OF_MONTH)
                         ),
                         new GregorianCalendar(
-                                now.get(Calendar.YEAR),
-                                now.get(Calendar.MONTH),
-                                now.get(Calendar.DAY_OF_MONTH) - 1
+                                NOW.get(Calendar.YEAR),
+                                NOW.get(Calendar.MONTH),
+                                NOW.get(Calendar.DAY_OF_MONTH) - 1
                         ),
                         80.5,
                         15
