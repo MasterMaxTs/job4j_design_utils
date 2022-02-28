@@ -4,6 +4,10 @@ public class Vehicle {
 
     private int size;
 
+    public Vehicle() {
+
+    }
+
     public Vehicle(int size) {
         this.size = size;
     }
