@@ -14,22 +14,12 @@ public class CarParking extends Parking {
         this.truckPlaces = truckPlaces;
     }
 
-    List<Integer> getFreeParkedPlaces(int start, int end) {
-        List<Integer> fpp = new ArrayList<>();
-        for (int i = start; i < end; i++) {
-            if (parkedPlaces.get(i) == null) {
-                fpp.add(i);
-            }
-        }
-        return fpp;
-    }
-
     @Override
     public boolean park(Vehicle vehicle, int cell) {
         int size = vehicle.getSize();
         int validCell = accept(size, cell);
         if (validCell != -1) {
-            if (size > Car.getDefaultSize()) {
+            if (size > Car.CAR_SIZE) {
                 for (int i = 0; i < size; i++) {
                     parkedPlaces.put(validCell + i, vehicle);
                 }
@@ -44,10 +34,10 @@ public class CarParking extends Parking {
 
     @Override
     public int accept(int size, int cell) {
-        List<Integer> freeCarPlaces = getFreeParkedPlaces(0, carPlaces);
-        List<Integer> freeTruckPlaces = getFreeParkedPlaces(carPlaces,
+        List<Integer> freeCarPlaces = getAvailableCells(0, carPlaces);
+        List<Integer> freeTruckPlaces = getAvailableCells(carPlaces,
                 carPlaces + truckPlaces);
-        if (size != Car.getDefaultSize()) {
+        if (size != Car.CAR_SIZE) {
             int freeCell = validateCell(freeTruckPlaces, cell);
             if (freeCell == -1) {
                 freeCell = validateCell(freeCarPlaces, cell);
@@ -70,6 +60,17 @@ public class CarParking extends Parking {
             return freeCell;
         }
         return validateCell(freeCarPlaces, cell);
+    }
+
+    @Override
+    public List<Integer> getAvailableCells(int start, int finish) {
+        List<Integer> fpp = new ArrayList<>();
+        for (int i = start; i < finish; i++) {
+            if (parkedPlaces.get(i) == null) {
+                fpp.add(i);
+            }
+        }
+        return fpp;
     }
 
     private int validateCell(List<Integer> freePlaces, int cell) {
