@@ -11,7 +11,7 @@ public class Printer implements MenuPrinter {
                             itemInfo.getNumber().split("\\.").length - 1
                     )
             );
-            sb.append(itemInfo.getNumber()).append("\s");
+            sb.append(itemInfo.getNumber()).append(" ");
             sb.append(itemInfo.getName()).append("\n");
         }
         return sb.toString();
