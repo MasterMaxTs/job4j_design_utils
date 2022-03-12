@@ -9,6 +9,7 @@ import static org.junit.Assert.assertEquals;
 
 public class SimpleMenuTest {
 
+    private static final String LS = System.lineSeparator();
     public static final ActionDelegate STUB_ACTION = System.out::println;
     private Menu menu;
 
@@ -26,19 +27,25 @@ public class SimpleMenuTest {
     public void whenAddThenReturnSame() {
         assertEquals(
                 new Menu.MenuItemInfo(
-                        "Сходить в магазин", List.of("Купить продукты"), STUB_ACTION, "1."
+                        "Сходить в магазин",
+                        List.of("Купить продукты"),
+                        STUB_ACTION, "1."
                 ),
                 menu.select("Сходить в магазин").get()
         );
         assertEquals(
                 new Menu.MenuItemInfo(
-                        "Купить продукты", List.of("Купить хлеб", "Купить молоко"), STUB_ACTION, "1.1."
+                        "Купить продукты",
+                        List.of("Купить хлеб", "Купить молоко"),
+                        STUB_ACTION, "1.1."
                 ),
                 menu.select("Купить продукты").get()
         );
         assertEquals(
                 new Menu.MenuItemInfo(
-                        "Покормить собаку", List.of(), STUB_ACTION, "2."
+                        "Покормить собаку",
+                        List.of(),
+                        STUB_ACTION, "2."
                 ),
                 menu.select("Покормить собаку").get()
         );
@@ -66,11 +73,16 @@ public class SimpleMenuTest {
     @Test
     public void whenAddThanPrintMenu() {
         MenuPrinter menuPrinter = new Printer();
-        String expected = "1. Сходить в магазин\n"
-                + "\t1.1. Купить продукты\n"
-                + "\t\t1.1.1. Купить хлеб\n"
-                + "\t\t1.1.2. Купить молоко\n"
-                + "2. Покормить собаку\n";
+        String expected = "1. Сходить в магазин"
+                + LS
+                + "\t1.1. Купить продукты"
+                + LS
+                + "\t\t1.1.1. Купить хлеб"
+                + LS
+                + "\t\t1.1.2. Купить молоко"
+                + LS
+                + "2. Покормить собаку"
+                + LS;
         String rsl = menuPrinter.print(menu);
         assertEquals(expected, rsl);
     }

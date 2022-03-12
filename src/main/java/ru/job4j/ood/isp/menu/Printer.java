@@ -12,7 +12,7 @@ public class Printer implements MenuPrinter {
                     )
             );
             sb.append(itemInfo.getNumber()).append(" ");
-            sb.append(itemInfo.getName()).append("\n");
+            sb.append(itemInfo.getName()).append(MenuPrinter.LS);
         }
         return sb.toString();
     }

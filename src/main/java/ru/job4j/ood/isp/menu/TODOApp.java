@@ -7,20 +7,23 @@ import java.util.Scanner;
 public class TODOApp {
 
     public static final ActionDelegate STUB_ACTION = System.out::println;
+    private static final String LS = System.lineSeparator();
+    public static final String EXIT = "выход";
 
     public static void main(String[] args) {
         TODOApp app = new TODOApp();
         SimpleMenu menu = new SimpleMenu();
+        Scanner scanner = new Scanner(System.in);
         Printer printer = new Printer();
-        app.init(menu, printer);
+        app.init(menu, scanner, printer);
     }
 
-    public void init(SimpleMenu menu, Printer printer) {
+    public void init(SimpleMenu menu, Scanner scanner, Printer printer) {
         int input;
         while (true) {
             showMenu();
-            Scanner sc = getScanner();
             System.out.println("Введите номер: ");
+            Scanner sc = new Scanner(System.in);
             input = validate(sc);
             if (input == 4) {
                 break;
@@ -28,10 +31,10 @@ public class TODOApp {
             switch (input) {
                 case 1:
                     showInputInfo();
-                    inputTasks(menu);
+                    inputTasks(menu, scanner);
                     break;
                 case 2:
-                    outputSubtasks(menu);
+                    outputSubtasks(menu, scanner);
                     break;
                 default:
                     System.out.println(printer.print(menu));
@@ -42,54 +45,48 @@ public class TODOApp {
 
     private int validate(Scanner scanner) {
         List<Integer> inputs = List.of(1, 2, 3, 4);
-        int input = scanner.nextInt();
-        while (true) {
-            if (inputs.contains(input)) {
-                return input;
+            String input = scanner.next();
+            int num =  input.charAt(0);
+            int valid = num - 48;
+            while (true) {
+                if (input.length() == 1 && inputs.contains(valid)) {
+                    return valid;
+                }
+                System.out.println("Введен некорректный номер! Введите номер [1-4]");
+                input = scanner.next();
+                num = input.charAt(0);
+                valid = num - 48;
             }
-            System.out.println("Введен некорректный номер! Введите номер [1-4]");
-            Scanner sc = getScanner();
-            input = sc.nextInt();
-        }
     }
 
-    private Scanner getScanner() {
-        return new Scanner(System.in);
-    }
-
-    private void inputTasks(SimpleMenu menu) {
-        String task;
+    private void inputTasks(SimpleMenu menu, Scanner scanner) {
         while (true) {
-            Scanner scanner = getScanner();
             System.out.println("Введите названия задачи:");
-            task = scanner.nextLine();
+            String task = scanner.nextLine();
             if (task.equalsIgnoreCase("Выход")) {
                 break;
             }
             System.out.println("Введите список подзадач "
-                    + "через ;");
-            scanner = getScanner();
+                    + "через <;>");
             String subtask = scanner.nextLine();
-            if (subtask.equalsIgnoreCase("Выход")) {
-                menu.add(task, task, STUB_ACTION);
+            if (subtask.equalsIgnoreCase(EXIT)) {
+                menu.add(null, task, STUB_ACTION);
                 continue;
             }
             String[] subtasks = subtask.split(";");
+            if (menu.select(task).isEmpty()) {
+                menu.add(null, task, STUB_ACTION);
+            }
             for (String st
                     : subtasks) {
-                if (menu.select(task).isEmpty()) {
-                    menu.add(task, task, STUB_ACTION);
-                }
                 menu.add(task, st, STUB_ACTION);
             }
         }
     }
 
-    private void outputSubtasks(SimpleMenu menu) {
-        String select;
-        Scanner scanner = getScanner();
+    private void outputSubtasks(SimpleMenu menu, Scanner scanner) {
         System.out.println("Введите название задачи");
-        select = scanner.nextLine();
+        String select = scanner.nextLine();
         Optional<Menu.MenuItemInfo> menuItemInfo =
                 menu.select(select);
         if (menuItemInfo.isEmpty()) {
@@ -97,41 +94,51 @@ public class TODOApp {
         } else {
             List<String> subList = menuItemInfo.get().getChildren();
             if (subList.size() == 0) {
-                System.out.printf("Подзадач в задаче <%s> нет\n",
-                        menuItemInfo.get().getName());
+                System.out.printf("Подзадач в задаче <%s> нет <%s>",
+                        menuItemInfo.get().getName(), LS);
             }
             menuItemInfo.get().getChildren().forEach(System.out::println);
         }
     }
 
     private void showInputInfo() {
-        String inputInfo = "================ СПИСОК ЗАДАЧ =================\n"
-                + "Введите поочередно задачу и подзадачу по образцу:\n"
-                + "Задача \n"
-                + "\tПодзадача \n"
-                + "\t\tПодзадача \n"
-                + "\t\t.........\n"
-                + "\t\tПодзадача \n"
-                + "Задача \n"
-                + "......\n\n"
+        String inputInfo = "================ СПИСОК ЗАДАЧ ================="
+                + LS
+                + "Введите поочередно задачу и подзадачу по образцу:"
+                + LS
+                + "Задача  "
+                + LS
+                + "\tПодзадача  "
+                + LS
+                + "\t\tПодзадача  "
+                + LS
+                + "\t\t......... "
+                + LS
+                + "\t\tПодзадача  "
+                + LS
+                + "Задача  "
+                + LS
                 + "-------------------------------------------------------------------"
-                + "\nПРИМЕЧАНИЕ: \tЕсли задач/подзадач нет, наберите <выход>.\n"
-                + "\t\t\t\tЧтобы полностью закончить ввод, наберите <выход>\n"
-                + "-------------------------------------------------------------------";
+                + LS
+                + "ПРИМЕЧАНИЕ: \tЕсли задач/подзадач нет, наберите <выход>. "
+                + LS
+                + "\t\t\t\tЧтобы полностью закончить ввод, наберите <выход> "
+                + LS
+                + "-------------------------------------------------------------------"
+                + LS;
         System.out.println(inputInfo);
     }
 
     private void showMenu() {
         System.out.println("================== MENU ====================");
-        String[] menu = {
-                        "ВВОД СПИСКА ЗАДАЧ:                         ",
-                        "ПРОСМОТР ПОДЗАДАЧ ВЫБРАННОЙ ЗАДАЧИ:        ",
-                        "ПРОСМОТР ВСЕХ ЗАДАЧ:                       ",
-                        "ВЫХОД:                                     "
-        };
-        for (int i = 0; i < menu.length; i++) {
-            System.out.println(menu[i] + (i + 1));
-        }
-        System.out.println();
+        String menu =   "ВВОД СПИСКА ЗАДАЧ ........................ 1"
+                        + LS
+                        + "ПРОСМОТР ПОДЗАДАЧ ВЫБРАННОЙ ЗАДАЧИ ....... 2"
+                        + LS
+                        + "ПРОСМОТР ВСЕХ ЗАДАЧ ...................... 3"
+                        + LS
+                        + "ВЫХОД .................................... 4"
+                        + LS;
+        System.out.println(menu);
     }
 }

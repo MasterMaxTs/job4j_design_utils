@@ -7,28 +7,36 @@ public class SimpleMenu implements Menu {
     private final List<MenuItem> rootElements = new ArrayList<>();
 
     @Override
-    public boolean add(String parentName, String childName, ActionDelegate actionDelegate) {
-        Optional<ItemInfo> parentNode = findItem(parentName);
-        return parentNode.isEmpty()
+    public boolean add(String parentName, String childName, ActionDelegate action) {
+        return Objects.equals(Menu.ROOT, parentName)
                 ? rootElements.add(
-                        new SimpleMenuItem(childName, actionDelegate)
+                        new SimpleMenuItem(childName, action)
                 )
-                : parentNode.get().menuItem.getChildren().add(
-                        new SimpleMenuItem(childName, actionDelegate)
-        );
+                : verifyParent(parentName, childName, action);
+    }
+
+    private boolean verifyParent(String parentName, String childName, ActionDelegate action) {
+        boolean rsl = false;
+        Optional<ItemInfo> parentNode = findItem(parentName);
+        Optional<ItemInfo> childNode = findItem(childName);
+        if (parentNode.isPresent() && childNode.isEmpty()) {
+            parentNode.get()
+                    .menuItem.getChildren()
+                    .add(
+                            new SimpleMenuItem(childName, action)
+                    );
+            rsl = true;
+        }
+        return rsl;
     }
 
     @Override
     public Optional<MenuItemInfo> select(String itemName) {
         Optional<ItemInfo> itemInfo = findItem(itemName);
-        return itemInfo.isPresent()
-                ? Optional.of(
-                        new MenuItemInfo(
-                                itemInfo.get().menuItem,
-                                itemInfo.get().number
-                        )
-                )
-                : Optional.empty();
+        return itemInfo.map(info -> new MenuItemInfo(
+                info.menuItem,
+                info.number
+        ));
     }
 
     @Override
