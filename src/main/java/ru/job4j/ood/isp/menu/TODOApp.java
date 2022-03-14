@@ -70,12 +70,12 @@ public class TODOApp {
                     + "через <;>");
             String subtask = scanner.nextLine();
             if (subtask.equalsIgnoreCase(EXIT)) {
-                menu.add(null, task, STUB_ACTION);
+                menu.add(Menu.ROOT, task, STUB_ACTION);
                 continue;
             }
             String[] subtasks = subtask.split(";");
             if (menu.select(task).isEmpty()) {
-                menu.add(null, task, STUB_ACTION);
+                menu.add(Menu.ROOT, task, STUB_ACTION);
             }
             for (String st
                     : subtasks) {
@@ -90,11 +90,11 @@ public class TODOApp {
         Optional<Menu.MenuItemInfo> menuItemInfo =
                 menu.select(select);
         if (menuItemInfo.isEmpty()) {
-            System.out.println("Указанной задачи нет в списке задач!");
+            System.out.printf("Задачи <%s> нет в списке задач!", select);
         } else {
             List<String> subList = menuItemInfo.get().getChildren();
             if (subList.size() == 0) {
-                System.out.printf("Подзадач в задаче <%s> нет <%s>",
+                System.out.printf("Подзадач в задаче <%s> нет. %s",
                         menuItemInfo.get().getName(), LS);
             }
             menuItemInfo.get().getChildren().forEach(System.out::println);
