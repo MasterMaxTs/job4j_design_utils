@@ -10,15 +10,15 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
-public class FoodStorageTest {
+public class ControlQualityTest {
 
-    private List<Food> products;
-    private List<Store> stores;
     private static final Calendar NOW = Store.current;
+    private List<Store> stores;
+    private ControlQuality controlQuality;
 
     @Before
     public void whenSetUp() {
-        products = List.of(
+        List<Food> products = List.of(
                 new DairyProducts(
                         "Milk",
                         new GregorianCalendar(
@@ -27,9 +27,9 @@ public class FoodStorageTest {
                                 NOW.get(Calendar.DAY_OF_MONTH)
                         ),
                         new GregorianCalendar(
-                        NOW.get(Calendar.YEAR),
-                        NOW.get(Calendar.MONTH),
-                        NOW.get(Calendar.DAY_OF_MONTH) - 1
+                                NOW.get(Calendar.YEAR),
+                                NOW.get(Calendar.MONTH),
+                                NOW.get(Calendar.DAY_OF_MONTH) - 1
                         ),
                         80.5,
                         15
@@ -84,6 +84,7 @@ public class FoodStorageTest {
                 new Shop(),
                 new Trash()
         );
+        controlQuality = new ControlQuality(products, stores);
     }
 
     @Test
@@ -116,11 +117,11 @@ public class FoodStorageTest {
                                 NOW.get(Calendar.MONTH),
                                 NOW.get(Calendar.DAY_OF_MONTH) - 5
                         ),
-                        80,
+                        64,
                         20
                 )
         ));
-        ControlQuality.distribute(products, stores);
+        controlQuality.resort();
         List<Food> rsl = stores.get(1).get();
         assertEquals(expected, rsl);
     }
@@ -144,7 +145,7 @@ public class FoodStorageTest {
                         10
                 )
         ));
-        ControlQuality.distribute(products, stores);
+        controlQuality.resort();
         List<Food> rsl = stores.get(0).get();
         assertEquals(expected, rsl);
     }
@@ -168,7 +169,7 @@ public class FoodStorageTest {
                         15
                 )
         ));
-        ControlQuality.distribute(products, stores);
+        controlQuality.resort();
         List<Food> rsl = stores.get(2).get();
         assertEquals(expected, rsl);
     }

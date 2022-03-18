@@ -16,7 +16,6 @@ public class Shop extends Store {
                 product.setPrice(
                         product.getPrice() * (1 - (double) product.getDiscount() / 100)
                 );
-                getDiscountInfo(product);
             }
             rsl = true;
         }
@@ -36,10 +35,5 @@ public class Shop extends Store {
     @Override
     public boolean accept(Food product) {
         return delta(product) > 0 && delta(product) <= 0.75;
-    }
-
-    private void getDiscountInfo(Food food) {
-        System.out.println(food
-                + " has price including discount\n");
     }
 }

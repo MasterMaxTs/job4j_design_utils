@@ -1,10 +1,20 @@
 package ru.job4j.ood.lsp.store;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ControlQuality {
 
-    public static void distribute(List<Food> foods, List<Store> stores) {
+    private final List<Food> foods;
+    private final List<Store> stores;
+
+    public ControlQuality(List<Food> foods, List<Store> stores) {
+        this.foods = foods;
+        this.stores = stores;
+        distribute(foods);
+    }
+
+    private void distribute(List<Food> foods) {
         stores.forEach(
                 store -> {
                         for (Food f
@@ -14,5 +24,29 @@ public class ControlQuality {
                             }
                         }
                 });
-        }
+    }
+
+    public void resort() {
+        List<Food> redisProducts = collect();
+        extract();
+        distribute(redisProducts);
+    }
+
+    private void extract() {
+        stores.forEach(
+                store -> {
+                    for (Food f
+                            : foods) {
+                        store.remove(f);
+                    }
+                }
+        );
+    }
+
+    public List<Food> collect() {
+        return stores
+                .stream()
+                .flatMap(s -> s.get().stream())
+                .collect(Collectors.toList());
+    }
 }

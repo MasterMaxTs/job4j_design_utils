@@ -15,7 +15,7 @@ public abstract class Store {
 
     public abstract boolean accept(Food food);
 
-    public double delta(Food product) {
+    protected double delta(Food product) {
         long expireDateInMillis = product.getExpiryDate().getTime().getTime();
         long createDateInMillis = product.getCreateDate().getTime().getTime();
         long currentDateInMillis = current.getTime().getTime();
