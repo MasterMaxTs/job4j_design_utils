@@ -43,7 +43,7 @@ public class ControlQuality {
         );
     }
 
-    public List<Food> collect() {
+    private List<Food> collect() {
         return stores
                 .stream()
                 .flatMap(s -> s.get().stream())
