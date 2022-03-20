@@ -10,6 +10,7 @@ public class Food {
     private final Calendar createDate;
     private double price;
     private final int discount;
+    private boolean setDiscount = false;
 
     public Food(String name, Calendar expiryDate, Calendar createDate,
                 double price, int discount) {
@@ -48,6 +49,14 @@ public class Food {
         return discount;
     }
 
+    public boolean isSetDiscount() {
+        return setDiscount;
+    }
+
+    public void setSetDiscount(boolean setDiscount) {
+        this.setDiscount = setDiscount;
+    }
+
     @Override
     public String toString() {
         return "Food{"
@@ -57,6 +66,7 @@ public class Food {
                 + ", createDate=" + createDate.getTime()
                 + ", price=" + price
                 + ", discount:" + discount + "%"
+                + ", setDiscount: " + isSetDiscount()
                 + '}';
     }
 

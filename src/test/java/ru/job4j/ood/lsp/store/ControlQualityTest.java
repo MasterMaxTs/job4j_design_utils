@@ -9,6 +9,8 @@ import java.util.GregorianCalendar;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
+import static org.hamcrest.Matchers.is;
 
 public class ControlQualityTest {
 
@@ -117,11 +119,10 @@ public class ControlQualityTest {
                                 NOW.get(Calendar.MONTH),
                                 NOW.get(Calendar.DAY_OF_MONTH) - 5
                         ),
-                        64,
+                        80,
                         20
                 )
         ));
-        controlQuality.resort();
         List<Food> rsl = stores.get(1).get();
         assertEquals(expected, rsl);
     }
@@ -145,7 +146,6 @@ public class ControlQualityTest {
                         10
                 )
         ));
-        controlQuality.resort();
         List<Food> rsl = stores.get(0).get();
         assertEquals(expected, rsl);
     }
@@ -169,8 +169,81 @@ public class ControlQualityTest {
                         15
                 )
         ));
-        controlQuality.resort();
         List<Food> rsl = stores.get(2).get();
         assertEquals(expected, rsl);
+    }
+
+    @Test
+    public void whenRestoreProductsToStores() {
+        List<Food> expectedFoodsToWarehouse = new ArrayList<>(List.of(
+                new DairyProducts(
+                        "Cheese",
+                        new GregorianCalendar(
+                                NOW.get(Calendar.YEAR),
+                                NOW.get(Calendar.MONTH),
+                                NOW.get(Calendar.DAY_OF_MONTH) + 21
+                        ),
+                        new GregorianCalendar(
+                                NOW.get(Calendar.YEAR),
+                                NOW.get(Calendar.MONTH),
+                                NOW.get(Calendar.DAY_OF_MONTH)
+                        ),
+                        240.7,
+                        10
+                )
+        ));
+        List<Food> expectedFoodsToShop = new ArrayList<>(List.of(
+                new BakeryProducts(
+                        "Bread",
+                        new GregorianCalendar(
+                                NOW.get(Calendar.YEAR),
+                                NOW.get(Calendar.MONTH),
+                                NOW.get(Calendar.DAY_OF_MONTH) + 3
+                        ),
+                        new GregorianCalendar(
+                                NOW.get(Calendar.YEAR),
+                                NOW.get(Calendar.MONTH),
+                                NOW.get(Calendar.DAY_OF_MONTH) - 1
+                        ),
+                        45.0,
+                        5
+                ),
+                new BakeryProducts(
+                        "Pretzel",
+                        new GregorianCalendar(
+                                NOW.get(Calendar.YEAR),
+                                NOW.get(Calendar.MONTH),
+                                NOW.get(Calendar.DAY_OF_MONTH) + 1
+                        ),
+                        new GregorianCalendar(
+                                NOW.get(Calendar.YEAR),
+                                NOW.get(Calendar.MONTH),
+                                NOW.get(Calendar.DAY_OF_MONTH) - 5
+                        ),
+                        80,
+                        20
+                )
+        ));
+        List<Food> expectedFoodsToTrash = new ArrayList<>(List.of(
+                new DairyProducts(
+                        "Milk",
+                        new GregorianCalendar(
+                                NOW.get(Calendar.YEAR),
+                                NOW.get(Calendar.MONTH),
+                                NOW.get(Calendar.DAY_OF_MONTH)
+                        ),
+                        new GregorianCalendar(
+                                NOW.get(Calendar.YEAR),
+                                NOW.get(Calendar.MONTH),
+                                NOW.get(Calendar.DAY_OF_MONTH) - 1
+                        ),
+                        80.5,
+                        15
+                )
+        ));
+        controlQuality.resort(stores);
+        assertThat(stores.get(0).get(), is(expectedFoodsToWarehouse));
+        assertThat(stores.get(1).get(), is(expectedFoodsToShop));
+        assertThat(stores.get(2).get(), is(expectedFoodsToTrash));
     }
 }

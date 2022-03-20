@@ -7,13 +7,15 @@ public abstract class Store {
 
     protected static Calendar current = Calendar.getInstance();
 
-    public abstract boolean add(Food product);
+    protected abstract boolean add(Food product);
 
-    public abstract boolean remove(Food product);
+    protected abstract boolean remove(Food product);
 
-    public abstract List<Food> get();
+    protected abstract List<Food> clear();
 
-    public abstract boolean accept(Food food);
+    protected abstract List<Food> get();
+
+    protected abstract boolean accept(Food food);
 
     protected double delta(Food product) {
         long expireDateInMillis = product.getExpiryDate().getTime().getTime();

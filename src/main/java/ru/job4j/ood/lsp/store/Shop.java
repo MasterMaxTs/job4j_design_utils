@@ -10,13 +10,15 @@ public class Shop extends Store {
     @Override
     public boolean add(Food product) {
         boolean rsl = false;
+        double discountPrice =
+                product.getPrice() * (1 - (double) product.getDiscount() / 100);
         if (accept(product)) {
-            shProducts.add(product);
-            if (delta(product) > 0 && delta(product) < 0.25) {
-                product.setPrice(
-                        product.getPrice() * (1 - (double) product.getDiscount() / 100)
-                );
+            if (!product.isSetDiscount()
+                    && (delta(product) > 0 && delta(product) < 0.25)) {
+                product.setPrice(discountPrice);
+                product.setSetDiscount(true);
             }
+            shProducts.add(product);
             rsl = true;
         }
         return rsl;
@@ -25,6 +27,13 @@ public class Shop extends Store {
     @Override
     public boolean remove(Food product) {
         return shProducts.remove(product);
+    }
+
+    @Override
+    public List<Food> clear() {
+        List<Food> rsl = new ArrayList<>(shProducts);
+        shProducts.clear();
+        return rsl;
     }
 
     @Override
