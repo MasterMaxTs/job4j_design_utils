@@ -23,7 +23,7 @@ public class Warehouse extends Store {
     }
 
     @Override
-    public List<Food> clear() {
+    public List<Food> extract() {
         List<Food> rsl = new ArrayList<>(whProducts);
         whProducts.clear();
         return rsl;

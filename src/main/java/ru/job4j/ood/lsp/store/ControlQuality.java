@@ -29,7 +29,7 @@ public class ControlQuality {
         stores.forEach(
                 store -> {
                     for (Food f
-                            : store.clear()) {
+                            : store.extract()) {
                         if (store.accept(f)) {
                             store.add(f);
                         }

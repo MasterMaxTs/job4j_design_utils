@@ -23,7 +23,7 @@ public class Trash extends Store {
     }
 
     @Override
-    public List<Food> clear() {
+    public List<Food> extract() {
         List<Food> rsl = new ArrayList<>(trProducts);
         trProducts.clear();
         return rsl;

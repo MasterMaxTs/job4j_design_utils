@@ -11,7 +11,7 @@ public abstract class Store {
 
     protected abstract boolean remove(Food product);
 
-    protected abstract List<Food> clear();
+    protected abstract List<Food> extract();
 
     protected abstract List<Food> get();
 

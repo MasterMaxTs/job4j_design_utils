@@ -30,7 +30,7 @@ public class Shop extends Store {
     }
 
     @Override
-    public List<Food> clear() {
+    public List<Food> extract() {
         List<Food> rsl = new ArrayList<>(shProducts);
         shProducts.clear();
         return rsl;
