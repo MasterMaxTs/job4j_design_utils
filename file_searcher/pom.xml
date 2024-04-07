@@ -16,11 +16,6 @@
     <description>Development of a utility to search for files in a folder</description>
     <packaging>jar</packaging>
 
-    <properties>
-        <maven.compiler.source>11</maven.compiler.source>
-        <maven.compiler.target>11</maven.compiler.target>
-    </properties>
-
     <build>
         <plugins>
             <plugin>
